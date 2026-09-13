@@ -2,6 +2,7 @@
 name: voice-latency-budget
 description: Build, measure, and fix a latency budget for a voice agent. Covers the five timings that matter (transcription delay, end-of-turn delay, LLM time to first token or TTFT, TTS time to first byte or TTFB, end to end), targets per pipeline shape, where the milliseconds hide, and the order to fix them in. Use when the agent feels slow or laggy, when choosing regions or providers, when reading latency metrics, or when someone asks what good latency is.
 license: MIT
+compatibility: Python 3.10 or later for the optional latency calculator.
 metadata:
   author: mahimairaja
   version: "0.1.0"
@@ -101,13 +102,16 @@ only one that trades answer quality for milliseconds, so it goes last, with an e
 
 ## The budget script
 
-[`../../scripts/latency_budget.py`](../../scripts/latency_budget.py) scores measured
+[`scripts/latency_budget.py`](scripts/latency_budget.py) scores measured
 timings against the ceiling for one shape and names the stage to fix first. Every
 flag takes milliseconds. At least one measurement is required. Stages folded into the
 model for that shape print as not applicable and are not scored.
 
-Run it as: `python scripts/latency_budget.py --shape cascade --eot 700 --stt 150
---ttft 620 --ttfb 240 --e2e 1560`. Shapes are `cascade`, `s2s`, and `full-duplex`.
+Resolve the helper from this SKILL.md's directory, not the caller's working directory.
+Run `python /absolute/path/to/voice-latency-budget/scripts/latency_budget.py --shape
+cascade --eot 700 --stt 150 --ttft 620 --ttfb 240 --e2e 1560`. Python 3.10 or later
+is required. Shapes are `cascade`, `s2s`, and `full-duplex`. Without Python, use the
+budget tables above and report the comparison manually.
 
 The output is one row per stage carrying the measurement, the ceiling, and either
 `ok` or the overrun in milliseconds. Below the rows it prints the worst stage, the
@@ -149,6 +153,18 @@ that guess, at min 0.3 s and max 2.5 s, and end-of-turn delay fell to 320 ms. Th
 digit case still passed. Preemptive generation then took time to first token to 360 ms.
 Co-locating synthesis with the agent took time to first byte to 110 ms. p50 landed at
 790 ms. A smaller model was never needed.
+
+## Using this skill
+
+Read related skills by name from your installed skills when available. The repository
+links are optional deeper guidance; this skill and its bundled references can be used
+on their own. If a linked skill is unavailable, continue with the rules here and name
+any analysis you could not complete.
+
+Before writing SDK calls, verify the relevant adapter against current official docs
+or a docs MCP. If neither is accessible, use supplied version-matched docs or mark the
+API detail unverified. Continue vendor-neutral analysis; do not invent a method or
+claim an integration was tested. Python is needed only when running a bundled helper.
 
 ## Adapters
 

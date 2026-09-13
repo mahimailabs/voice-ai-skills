@@ -120,6 +120,18 @@ chatbot prompt, and the voice rewrite of each.
 The full clinic prompt, with all four blocks and the three canonical tools, is in
 [references/prompt-blocks.md](references/prompt-blocks.md).
 
+## Using this skill
+
+Read related skills by name from your installed skills when available. The repository
+links are optional deeper guidance; this skill and its bundled references can be used
+on their own. If a linked skill is unavailable, continue with the rules here and name
+any analysis you could not complete.
+
+Before writing SDK calls, verify the relevant adapter against current official docs
+or a docs MCP. If neither is accessible, use supplied version-matched docs or mark the
+API detail unverified. Continue vendor-neutral analysis; do not invent a method or
+claim an integration was tested. Python is needed only when running a bundled helper.
+
 ## Adapters
 
 Vendor names appear only in this section and in

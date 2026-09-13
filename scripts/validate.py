@@ -2,7 +2,7 @@
 """Validate the skills in this repository.
 
 No third-party dependencies. Checks structure, frontmatter, size, headings and
-relative links for every folder under skills/. Exits 1 on the first failure set.
+all Markdown links. Each skill must work when copied without its siblings. Exits 1 on the first failure set.
 
 Usage:
     python scripts/validate.py [--skills-dir skills]
@@ -14,6 +14,8 @@ import argparse
 import os
 import re
 import sys
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 NAME_MAX = 64
@@ -52,6 +54,8 @@ def parse_frontmatter(text: str, path: str) -> dict:
             raise Failure(f"{path}:{number}: frontmatter line is not 'key: value'")
         key, _, value = raw.partition(":")
         key = key.strip()
+        if (indented and parent and key in data[parent]) or (not indented and key in data):
+            raise Failure(f"{path}:{number}: duplicate frontmatter key '{key}'")
         value = value.strip()
         if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
             value = value[1:-1]
@@ -74,14 +78,17 @@ def parse_frontmatter(text: str, path: str) -> dict:
 
 
 def check_links(text: str, skill_dir: str, path: str, failures: list) -> None:
+    root = Path(skill_dir).resolve()
     for target in LINK_RE.findall(text):
-        if target.startswith(("http://", "https://", "mailto:", "#")):
+        if target.startswith("#") or urlsplit(target).scheme:
             continue
-        target = target.split("#", 1)[0]
+        target = unquote(urlsplit(target).path)
         if not target:
             continue
-        resolved = os.path.normpath(os.path.join(skill_dir, target))
-        if not os.path.exists(resolved):
+        resolved = (Path(path).parent / target).resolve()
+        if not resolved.is_relative_to(root):
+            failures.append(f"{path}: link escapes the installable skill: {target}")
+        elif not resolved.exists():
             failures.append(f"{path}: relative link does not resolve: {target}")
 
 
@@ -102,7 +109,7 @@ def check_skill(skill_dir: str, failures: list) -> None:
         return
 
     name = front.get("name")
-    if not name:
+    if not isinstance(name, str) or not name:
         failures.append(f"{path}: frontmatter has no 'name'")
     else:
         if name != folder:
@@ -118,6 +125,10 @@ def check_skill(skill_dir: str, failures: list) -> None:
     elif len(description) > DESC_MAX:
         failures.append(f"{path}: description is {len(description)} chars, max is {DESC_MAX}")
 
+    compatibility = front.get("compatibility")
+    if compatibility is not None and (not isinstance(compatibility, str) or not 1 <= len(compatibility) <= 500):
+        failures.append(f"{path}: compatibility must be a string of 1 to 500 characters")
+
     line_count = len(text.split("\n"))
     if line_count > MAX_LINES:
         failures.append(f"{path}: {line_count} lines, max is {MAX_LINES}")
@@ -127,7 +138,9 @@ def check_skill(skill_dir: str, failures: list) -> None:
         if not re.search(rf"^{re.escape(heading)}\s*$", text, re.MULTILINE):
             failures.append(f"{path}: missing required heading '{heading}'")
 
-    check_links(text, skill_dir, path, failures)
+    # References are executable instructions too; validate the entire installed folder.
+    for markdown in Path(skill_dir).rglob("*.md"):
+        check_links(markdown.read_text(encoding="utf-8"), skill_dir, str(markdown), failures)
 
 
 def main() -> int:

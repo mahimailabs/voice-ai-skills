@@ -148,3 +148,6 @@ __pycache__/
 
 # Internal planning document, not published
 map.md
+
+# Python virtual environments
+.venv/

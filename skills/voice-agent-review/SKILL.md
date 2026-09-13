@@ -54,14 +54,14 @@ callers reach. If both ship, score both and file two reports.
 
 | group | what it scores | skill to read on failure |
 | --- | --- | --- |
-| pipeline choice | the shape, and whether exact wording survives it | [voice-pipeline-choice](../voice-pipeline-choice/SKILL.md) |
-| turn-taking | who decides the caller has finished, and after how long | [voice-turn-taking](../voice-turn-taking/SKILL.md) |
-| interruptions | what stops the agent, and what must never be stopped | [voice-interruptions](../voice-interruptions/SKILL.md) |
-| latency | the five timings, measured on a real call | [voice-latency-budget](../voice-latency-budget/SKILL.md) |
-| prompting | whether the prompt was written for the ear | [voice-prompting](../voice-prompting/SKILL.md) |
-| tools | deadlines, fillers, read-backs, and what comes back | [voice-function-tools](../voice-function-tools/SKILL.md) |
-| telephony | answering, transfers, digits, consent, narrowband | [voice-telephony](../voice-telephony/SKILL.md) |
-| evals | what is asserted, what is judged, and what runs in CI | [voice-agent-evals](../voice-agent-evals/SKILL.md) |
+| pipeline choice | the shape, and whether exact wording survives it | [voice-pipeline-choice](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-pipeline-choice/SKILL.md) |
+| turn-taking | who decides the caller has finished, and after how long | [voice-turn-taking](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-turn-taking/SKILL.md) |
+| interruptions | what stops the agent, and what must never be stopped | [voice-interruptions](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-interruptions/SKILL.md) |
+| latency | the five timings, measured on a real call | [voice-latency-budget](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-latency-budget/SKILL.md) |
+| prompting | whether the prompt was written for the ear | [voice-prompting](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-prompting/SKILL.md) |
+| tools | deadlines, fillers, read-backs, and what comes back | [voice-function-tools](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-function-tools/SKILL.md) |
+| telephony | answering, transfers, digits, consent, narrowband | [voice-telephony](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-telephony/SKILL.md) |
+| evals | what is asserted, what is judged, and what runs in CI | [voice-agent-evals](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-agent-evals/SKILL.md) |
 
 Each group holds five items worth one point each. The 40 items, with a pass condition
 for every one, are in [references/checklist.md](references/checklist.md).
@@ -119,12 +119,25 @@ own guidance treats an uncertain result as human, so expect to find it in code t
 followed the vendor example. The failure is asymmetric: a person hearing a short
 self-contained line loses nothing, a machine hearing a question records silence.
 
+## Using this skill
+
+Read related skills by name from your installed skills when available. The repository
+links are optional deeper guidance; this skill and its bundled references can be used
+on their own. If a linked skill is unavailable, continue with the rules here and name
+any analysis you could not complete.
+
+Before writing SDK calls, verify the relevant adapter against current official docs
+or a docs MCP. If neither is accessible, use supplied version-matched docs or mark the
+API detail unverified. Continue vendor-neutral analysis; do not invent a method or
+claim an integration was tested. Python is needed only when running a bundled helper.
+
 ## The clinic agent scored
 
 The clinic booking agent as it was first written, before any of these skills were
-applied to it. It is not the code in `examples/clinic-agent/`. That example already
-makes the interruption, latency and tool choices these skills require, and it carries
-no telephony and no eval suite at all, so it would fail a different set of items. This
+applied to it. It is not the code in `examples/clinic-agent/`. That example demonstrates
+confirmation guards, tool deadlines, and timing instrumentation. It has not been
+validated on real calls and carries no telephony or voice eval suite, so those review
+items remain unproven. This
 table is here to show the shape of a report, not to score the repo.
 
 | group | score | the gap that cost the points |

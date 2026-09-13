@@ -131,6 +131,18 @@ pick one. That is the normal outcome on a clinic line: the digit case wants 0.8 
 audio detector, and a yes or no answer wants 0.3 s. The cost is one more parameter and a confidence
 score you now depend on. Re-measure after turning it on.
 
+## Using this skill
+
+Read related skills by name from your installed skills when available. The repository
+links are optional deeper guidance; this skill and its bundled references can be used
+on their own. If a linked skill is unavailable, continue with the rules here and name
+any analysis you could not complete.
+
+Before writing SDK calls, verify the relevant adapter against current official docs
+or a docs MCP. If neither is accessible, use supplied version-matched docs or mark the
+API detail unverified. Continue vendor-neutral analysis; do not invent a method or
+claim an integration was tested. Python is needed only when running a bundled helper.
+
 ## Adapters
 
 Version pins and full mappings: [references/adapters.md](references/adapters.md).

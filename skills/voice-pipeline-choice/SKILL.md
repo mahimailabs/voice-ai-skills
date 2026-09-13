@@ -113,12 +113,24 @@ confirmation number, and both must be exact. A paraphrase there books the wrong 
 - Read-backs stop mattering. No number the caller must act on is spoken any more, so
   the wording constraint is gone and speech-to-speech is open.
 - Measured p50 stays above 800 ms after the whole order of fixes in
-  [voice-latency-budget](../voice-latency-budget/SKILL.md). The shape is now the ceiling, not the tuning.
+  [voice-latency-budget](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-latency-budget/SKILL.md). The shape is now the ceiling, not the tuning.
 - Transcripts show callers expecting overlap, not turns. They interject, the agent
-  waits, and the call stalls. Evaluate full-duplex against [voice-full-duplex](../voice-full-duplex/SKILL.md).
+  waits, and the call stalls. Evaluate full-duplex against [voice-full-duplex](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-full-duplex/SKILL.md).
 
-Re-measure after any change, on a real phone call. See [voice-latency-budget](../voice-latency-budget/SKILL.md) for the
-measurement rules and [voice-turn-taking](../voice-turn-taking/SKILL.md) for what the shape hands you to tune.
+Re-measure after any change, on a real phone call. See [voice-latency-budget](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-latency-budget/SKILL.md) for the
+measurement rules and [voice-turn-taking](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-turn-taking/SKILL.md) for what the shape hands you to tune.
+
+## Using this skill
+
+Read related skills by name from your installed skills when available. The repository
+links are optional deeper guidance; this skill and its bundled references can be used
+on their own. If a linked skill is unavailable, continue with the rules here and name
+any analysis you could not complete.
+
+Before writing SDK calls, verify the relevant adapter against current official docs
+or a docs MCP. If neither is accessible, use supplied version-matched docs or mark the
+API detail unverified. Continue vendor-neutral analysis; do not invent a method or
+claim an integration was tested. Python is needed only when running a bundled helper.
 
 ## Adapters
 

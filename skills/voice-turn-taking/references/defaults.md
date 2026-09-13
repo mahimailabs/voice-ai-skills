@@ -70,4 +70,4 @@ caller feels that number plus everything after it, up to the first agent audio b
 A 200 ms change in min delay moves p50 by roughly 200 ms on every turn that ends
 with a clean stop. It moves nothing on turns that run out to max delay. If your p95
 does not move when you change min, the detector is not firing and max is doing the
-work. Full latency method: [voice-latency-budget](../../voice-latency-budget/SKILL.md).
+work. Full latency method: [voice-latency-budget](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-latency-budget/SKILL.md).

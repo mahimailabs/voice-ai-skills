@@ -25,8 +25,8 @@ deadline and a sentence to say when it expires.
 
 ## The three clinic tools
 
-The clinic agent answers the main line for four physicians and books, reschedules, and
-cancels appointments. It ships exactly three tools.
+The clinic example books appointments with three tools. It directs rescheduling and
+cancellation to the front desk; neither operation is implemented by these tools.
 
 ### check_availability(physician, date_range, appointment_type)
 
@@ -45,17 +45,19 @@ that the prompt marks as never spoken.
 
 ### book_appointment(patient_id, slot_id, appointment_type)
 
-WRITE. READ-BACK GATE APPLIES. Not idempotent. Never async.
+WRITE. READ-BACK GATE APPLIES. Require backend idempotency. Never run an unconfirmed write in the background.
 
 > Book one slot for one patient. Call only after the caller has heard the day, date,
 > time, and physician read back and has said yes. Never call this to check whether a
-> slot is free. Calling it twice books two appointments.
+> slot is free. Reconcile an uncertain outcome before retrying.
 >
 > patient_id: from lookup_patient. Never from the caller.
 > slot_id: from check_availability. Never invented, never guessed.
 > appointment_type: the type used when the slot was found.
 
-Returns one sentence with the confirmation number written as words. On timeout, do not
+The example uses two phases under this public tool name: protected proposal first,
+then commitment after a fresh caller yes. It speaks the confirmation as fixed text.
+A single-phase implementation instead returns the confirmation number as words. On timeout, do not
 retry blindly: confirm with a read of the patient's bookings. Make the write idempotent
 on patient and slot, so a retry with the same key returns the original confirmation.
 

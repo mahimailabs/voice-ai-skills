@@ -53,7 +53,7 @@ model fires it while the caller is still choosing a day.
 
 Good: "Book one confirmed slot. Call only after the caller has heard the day, date,
 time, and physician read back and has said yes. Never call this to check whether a
-slot is free. Calling it twice books two appointments."
+slot is free. Never retry a write without reconciling its outcome."
 
 ## Headline defaults
 
@@ -76,12 +76,12 @@ The full numbers table, the three docstrings, and the error strings are in
 ## The read-back gate
 
 **No tool with a side effect runs before the caller confirms a read-back, and that
-read-back cannot be interrupted.** The gate mechanics belong to [voice-interruptions](../voice-interruptions/SKILL.md).
+read-back cannot be interrupted.** The gate mechanics belong to [voice-interruptions](https://github.com/mahimailabs/voice-ai-skills/blob/main/skills/voice-interruptions/SKILL.md).
 
 ## The three clinic tools
 
-The clinic agent answers the main line and books, reschedules, and cancels
-appointments for four physicians. It needs exactly three tools.
+The clinic example books appointments with three tools. Rescheduling and cancellation
+go to the front desk; they need their own tools and confirmation gates in a real service.
 
 **`check_availability(physician, date_range, appointment_type)`** Read only. No
 read-back gate. Safe to retry.
@@ -92,11 +92,11 @@ read-back gate. Safe to retry.
 > caller asked for. `appointment_type` is routine, follow up, or urgent.
 
 **`book_appointment(patient_id, slot_id, appointment_type)`** WRITE. READ-BACK GATE
-APPLIES. Not idempotent.
+APPLIES. Require backend idempotency; never assume it.
 
 > Book one slot for one patient. Call only after the caller has heard the day, date,
 > time, and physician read back and has said yes. Never call this to check
-> availability. Calling it twice books two appointments. `patient_id` comes from
+> availability. Reconcile an uncertain write before any retry. `patient_id` comes from
 > `lookup_patient`. `slot_id` comes from `check_availability` and is never invented.
 
 **`lookup_patient(full_name, date_of_birth)`** Read only. No read-back gate. Returns
@@ -105,6 +105,13 @@ PII, so log fields are redacted.
 > Find the patient record. Call once the caller has given both a full name and a date
 > of birth. Do not guess a spelling: ask the caller to repeat it. `date_of_birth` is
 > passed only after you have read it back one digit group at a time.
+
+The runnable clinic example packages preparation and commitment in this one public
+tool: the first call speaks a protected proposal and writes nothing. A later call can
+write only after playback completed and a fresh caller yes matched that proposal.
+Repeated calls without a new yes cannot write. A stable idempotency key and read-only
+reconciliation protect uncertain outcomes. This is code enforcement, not a prompt
+instruction to trust the model's memory of consent.
 
 ## Return values
 
@@ -172,6 +179,18 @@ model already receives the parameter names in the tool definition.
 
 Keep the tool count at what a caller could plausibly ask for on one line. The clinic
 agent ships three. An agent with fifteen tools picks the wrong one under time pressure.
+
+## Using this skill
+
+Read related skills by name from your installed skills when available. The repository
+links are optional deeper guidance; this skill and its bundled references can be used
+on their own. If a linked skill is unavailable, continue with the rules here and name
+any analysis you could not complete.
+
+Before writing SDK calls, verify the relevant adapter against current official docs
+or a docs MCP. If neither is accessible, use supplied version-matched docs or mark the
+API detail unverified. Continue vendor-neutral analysis; do not invent a method or
+claim an integration was tested. Python is needed only when running a bundled helper.
 
 ## Adapters
 

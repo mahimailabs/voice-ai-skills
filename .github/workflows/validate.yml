@@ -9,24 +9,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Validate skills
+      - name: Validate self-contained skills
         run: python scripts/validate.py
-
-      - name: Compile example agents
-        run: python -m py_compile examples/clinic-agent/livekit_agent.py examples/clinic-agent/pipecat_agent.py
-
-      - name: Latency budget script smoke test
-        run: python scripts/latency_budget.py --shape cascade --eot 700 --ttft 620 --ttfb 240 --e2e 1560
-
-      - name: Second opinion from the reference validator
-        continue-on-error: true
+      - name: Regression checks
+        run: python -m unittest discover -s tests -v
+      - name: Compile examples and helpers
+        run: python -m compileall -q examples/clinic-agent scripts
+      - name: Reference validator
         run: |
-          pip install --quiet skills-ref || exit 0
+          pip install --quiet skills-ref==0.1.1
           for skill in skills/*/; do
-            agentskills validate "$skill" || echo "non-blocking failure in $skill"
+            agentskills validate "$skill" || exit 1
           done
+
+  installed-layout:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mode: [copy, symlink]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.20.0"
+      - run: python scripts/test_installs.py --mode ${{ matrix.mode }}
+
+  sdk-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned SDKs
+        run: pip install 'livekit-agents==1.8.1' 'pipecat-ai[daily,deepgram,cartesia,openai,silero]==1.10.0' python-dotenv
+      - name: SDK contracts with fake I/O
+        run: python -m unittest discover -s tests/sdk -v
