@@ -141,3 +141,10 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Local tool caches
+.ruff_cache/
+__pycache__/
+
+# Internal planning document, not published
+map.md

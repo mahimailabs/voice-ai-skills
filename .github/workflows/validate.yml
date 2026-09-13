@@ -1,0 +1,32 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate skills
+        run: python scripts/validate.py
+
+      - name: Compile example agents
+        run: python -m py_compile examples/clinic-agent/livekit_agent.py examples/clinic-agent/pipecat_agent.py
+
+      - name: Latency budget script smoke test
+        run: python scripts/latency_budget.py --shape cascade --eot 700 --ttft 620 --ttfb 240 --e2e 1560
+
+      - name: Second opinion from the reference validator
+        continue-on-error: true
+        run: |
+          pip install --quiet skills-ref || exit 0
+          for skill in skills/*/; do
+            agentskills validate "$skill" || echo "non-blocking failure in $skill"
+          done

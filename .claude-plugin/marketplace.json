@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "voice-ai-skills",
+  "description": "Vendor-neutral Agent Skills for building voice agents: turn-taking, interruptions, latency budgets, telephony, evals, full-duplex.",
+  "owner": {
+    "name": "Mahimai Raja J",
+    "url": "https://github.com/mahimairaja"
+  },
+  "plugins": [
+    {
+      "name": "voice-ai",
+      "source": "./",
+      "skills": ["./skills"],
+      "description": "Ten skills that teach a coding agent the engineering judgment behind voice agents: pipeline choice, turn-taking, interruptions, latency budgets, prompting for speech, function tools, telephony, evals, full-duplex models, and a review checklist.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Mahimai Raja J",
+        "url": "https://github.com/mahimairaja"
+      },
+      "homepage": "https://github.com/mahimairaja/voice-ai-skills",
+      "repository": "https://github.com/mahimairaja/voice-ai-skills",
+      "license": "MIT",
+      "category": "voice-ai",
+      "keywords": [
+        "voice-pipeline-choice",
+        "voice-turn-taking",
+        "voice-interruptions",
+        "voice-latency-budget",
+        "voice-prompting",
+        "voice-function-tools",
+        "voice-telephony",
+        "voice-agent-evals",
+        "voice-full-duplex",
+        "voice-agent-review",
+        "voice-ai",
+        "voice-agents",
+        "conversational-ai",
+        "telephony",
+        "speech-to-speech"
+      ]
+    }
+  ]
+}
