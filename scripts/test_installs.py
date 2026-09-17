@@ -26,7 +26,7 @@ def main():
     names = sorted(p.name for p in (ROOT/'skills').iterdir() if p.is_dir())
     for selection in ['*', *names]:
         with tempfile.TemporaryDirectory(prefix='voice-skills-install-') as folder:
-            command = ['npx', '--yes', 'skills@1.5.26', 'add', str(ROOT), '--skill', selection,
+            command = ['npx', '--yes', 'skills@1.6.0', 'add', str(ROOT), '--skill', selection,
                        '--agent', *AGENTS, '--yes']
             if args.mode == 'copy':
                 command.append('--copy')

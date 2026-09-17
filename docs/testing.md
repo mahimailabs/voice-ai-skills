@@ -22,7 +22,7 @@ python scripts/test_installs.py --mode copy
 python scripts/test_installs.py --mode symlink
 ```
 
-Each command runs `skills@1.5.26` for all five named targets, with the full collection
+Each command runs `skills@1.6.0` for all five named targets, with the full collection
 and each of the ten skills separately. Nothing is installed globally. Complete
 installed files, links, and helper execution are checked in temporary projects.
 

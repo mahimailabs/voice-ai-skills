@@ -24,6 +24,9 @@ rules can travel between coding agents and voice stacks.
 
 ## Install
 
+The current installer requires Node.js 22.20 or later. If Node is unavailable,
+use the manual installation instructions below.
+
 Use the installer to choose your coding agent and the skills you want:
 
 ```sh
