@@ -1,0 +1,22 @@
+{
+  "ran": "26 September 2026, commit aea7d7b",
+  "target": "examples/clinic-agent · LiveKit path",
+  "score": "23/40",
+  "band": "pilot, capped by 1 hard fail",
+  "groups": [
+    { "name": "pipeline choice", "score": "3/5" },
+    { "name": "turn-taking", "score": "5/5" },
+    { "name": "interruptions", "score": "4/5" },
+    { "name": "latency", "score": "2/5" },
+    { "name": "prompting", "score": "5/5" },
+    { "name": "tools", "score": "4/5" },
+    { "name": "telephony", "score": "0/5" },
+    { "name": "evals", "score": "0/5" }
+  ],
+  "hardFailures": ["No audio tests: CI runs only text unit tests, and there is no voice eval suite."],
+  "fixes": [
+    { "fix": "Add an audio scenario suite for the clinic flow and run it nightly and before release.", "file": ".github/workflows/validate.yml:17-18" },
+    { "fix": "Commit a measured run of at least 50 turns with p50 and p95 per timing.", "file": "livekit_agent.py:118-122" },
+    { "fix": "Set min interruption words to 0: at 2, a one-word “wait” or “no” does not stop the agent.", "file": "livekit_agent.py:112" }
+  ]
+}

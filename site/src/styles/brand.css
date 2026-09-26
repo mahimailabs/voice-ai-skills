@@ -64,3 +64,22 @@ nav.sidebar a[aria-current='page']:focus {
   box-shadow: inset 2px 0 0 var(--sl-color-accent-high);
 }
 .sl-markdown-content td:first-child a { white-space: nowrap; }
+
+/* browser surfaces carry the brand too */
+::selection { background: var(--sl-color-accent-low); color: var(--sl-color-white); }
+:focus-visible { outline: 2px solid var(--sl-color-accent-high); outline-offset: 2px; border-radius: 0.25rem; }
+html { accent-color: var(--sl-color-accent-high); caret-color: var(--sl-color-accent-high); }
+a { text-underline-offset: 0.2em; }
+
+/* the GitHub icon in the header is navigation, not a signal */
+.social-icons a { color: var(--sl-color-gray-3); }
+.social-icons a:hover { color: var(--sl-color-white); }
+
+/* reading measure on skill pages: prose at 65–75 characters, tables and code at full width */
+.sl-markdown-content :is(p, li, blockquote) { max-width: 70ch; }
+
+/* the home page runs on mahimai.ca's 80rem shell, not the docs column */
+[data-has-hero], .page:has(.home) .sl-container { max-width: 80rem; }
+
+/* the home page carries its own h1; Starlight's page title stays for the document outline only */
+.content-panel:has(#_top):has(~ .content-panel .home) { display: none; }

@@ -22,6 +22,10 @@ changes a claim, the entry names the skill and the stack.
 - `site/`: the skills.mahimai.ca website, built with Astro Starlight. Every skill page, the
   combined “Do not” page, and the neutrality policy are generated from the repository on
   each build, and CI builds it on every pull request.
+- skills.mahimai.ca home page: an authored page in the mahimai.ca chapter layout, with a
+  real `voice-agent-review` run on the clinic example as its centerpiece, one-line copyable
+  install commands, and the skills grouped by the part of the call they govern. The full
+  report is published at `/example-review/`.
 
 ## [0.1.0] - 2026-09-16
 

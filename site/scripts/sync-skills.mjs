@@ -60,6 +60,7 @@ if (missing.length) throw new Error(`add to ORDER in sync-skills.mjs: ${missing.
 const skills = ORDER.filter((n) => found.includes(n)).map(parseSkill);
 
 rmSync(join(DOCS, 'skills'), { recursive: true, force: true });
+rmSync(join(DOCS, 'index.mdx'), { force: true }); // the home page is src/pages/index.astro
 mkdirSync(join(DOCS, 'skills'), { recursive: true });
 skills.forEach((s, i) => {
   const intro = `:::note[Source]\nThis page is [\`skills/${s.name}/SKILL.md\`](${BLOB}/skills/${s.name}/SKILL.md), rendered as is. Install it with \`npx skills add mahimailabs/voice-ai-skills --skill ${s.name}\`.\n:::\n\n`;
@@ -83,21 +84,35 @@ writeFileSync(join(DOCS, 'neutrality.md'),
   frontmatter({ title: yamlString('Vendor neutrality and adapter policy'), description: yamlString('The rules that keep the collection vendor-neutral, for contributors and for vendors.'), editUrl: yamlString(`${EDIT}/docs/neutrality.md`) }) +
   rewriteLinks(neutral, 'docs'));
 
-// ------------------------------------------------------------------ home, from the README
+// ------------------------------------------------------------------ home data, from the README and the skills
+// src/pages/index.astro renders this. Nothing on the home page is typed twice.
 const readme = readFileSync(join(ROOT, 'README.md'), 'utf8');
-const table = section(readme, '## The skills').replace(/\]\(skills\/([a-z0-9-]+)\/\)/g, '](/skills/$1/)');
-const tryIt = section(readme, '## Try it');
-const install = readFileSync(join(SITE, 'src/data/install-output.txt'), 'utf8').trimEnd();
-writeFileSync(join(DOCS, 'index.mdx'),
-  frontmatter({
-    title: yamlString('Voice AI Skills'),
-    description: yamlString('Vendor-neutral engineering judgment for the coding agent building your voice agent. Ten skills, versioned adapters for LiveKit, Pipecat, and Vapi.'),
-    template: 'splash',
-    hero: `\n  title: ${yamlString('Engineering judgment for the coding agent building your voice agent.')}\n  tagline: ${yamlString('A pause is not always the end of a turn. A cough should not cancel a reply. A booking needs a read-back and a clear yes before the write. Ten skills teach your coding agent those decisions.')}\n  actions:\n    - text: Start with the review\n      link: /skills/voice-agent-review/\n      icon: right-arrow\n    - text: View on GitHub\n      link: ${REPO}\n      icon: external\n      variant: minimal`,
-  }) +
-  `## Install\n\nInstall the review skill into your project. This is the installer's real output, captured on a fresh project:\n\n\`\`\`text title="Terminal"\n${install}\n\`\`\`\n\n` +
-  `Install every skill with \`npx skills add mahimailabs/voice-ai-skills --skill '*'\`. The installer needs Node.js 22.20 or later; see [manual installation](${REPO}#install) otherwise.\n\n` +
-  `## Try it\n\n${tryIt}\n\n## The skills\n\n${table}\n\n` +
-  `## Vendor-neutral by rule\n\nThe core of every skill never recommends a provider. Adapters for LiveKit, Pipecat, and Vapi are pinned to a version and a verification date, and every stack gets the same fields. The rules are in the [neutrality policy](/neutrality/).\n`);
+const cells = (row) => row.split('|').slice(1, -1).map((c) => c.trim());
+const rows = section(readme, '## The skills').split('\n').filter((l) => /^\| \[voice-/.test(l)).map(cells);
+const skillRows = rows.map(([link, decides, useWhen]) => {
+  const name = link.match(/\[([a-z0-9-]+)\]/)[1];
+  return { name, title: skills.find((s) => s.name === name)?.title ?? name, decides, useWhen };
+});
+const prompts = [...section(readme, '## Try it').matchAll(/^> (.+(?:\n> .+)*)/gm)].map((m) => m[1].replace(/\n> /g, ' '));
+// the adapter header of one skill, verbatim: what "pinned to a version and a date" looks like
+const adapters = readFileSync(join(ROOT, 'skills/voice-interruptions/references/adapters.md'), 'utf8');
+const stamps = ['LiveKit Agents', 'Pipecat', 'Vapi'].map((stack) => {
+  const after = adapters.split(`\n## ${stack}\n`)[1] ?? '';
+  const line = after.split('\n').find((l) => l.trim()) ?? '';
+  return { stack, pin: line.split(/(?<=\.)\s/)[0] };
+});
+const transcript = readFileSync(join(SITE, 'src/data/install-output.txt'), 'utf8').trimEnd();
+writeFileSync(join(SITE, 'src/data/home.generated.json'), JSON.stringify({ skills: skillRows, prompts, stamps, transcript,
+  stampsSource: `${BLOB}/skills/voice-interruptions/references/adapters.md` }, null, 2));
 
-console.log(`sync-skills: ${skills.length} skills, do-not, neutrality, home`);
+// ------------------------------------------------------------------ the full example review, when one is committed
+const reviewPath = join(SITE, 'src/data/clinic-review.md');
+if (existsSync(reviewPath)) {
+  const review = readFileSync(reviewPath, 'utf8').replace(/^# .+\n+/, '');
+  writeFileSync(join(DOCS, 'example-review.md'),
+    frontmatter({ title: yamlString('Example review: the clinic agent'), description: yamlString('A real voice-agent-review run on the bundled clinic booking agent, unedited.'), editUrl: 'false' }) +
+    `:::note[Real output]\nThis is an unedited \`voice-agent-review\` run against [\`examples/clinic-agent/\`](${BLOB}/examples/clinic-agent/). The example leaves out telephony, durable storage, and an eval suite on purpose, and the score says so.\n:::\n\n` +
+    rewriteLinks(review, 'examples/clinic-agent'));
+}
+
+console.log(`sync-skills: ${skills.length} skills, do-not, neutrality, home data${existsSync(reviewPath) ? ', example review' : ''}`);
