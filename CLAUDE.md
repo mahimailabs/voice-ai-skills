@@ -16,4 +16,5 @@ and the number, never for a method signature.
 5. Numbers here are defaults with a stated range and a symptom. Change one against a
    measurement, never against a preference.
 6. The vendor-neutral core is what survives a port between stacks. The adapters do not.
+   `docs/neutrality.md` sets the rules for both.
 7. `python scripts/validate.py` must pass before any change under `skills/` lands.
