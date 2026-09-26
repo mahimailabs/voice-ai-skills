@@ -1,7 +1,6 @@
 // skills.mahimai.ca: a static site served from Workers static assets. Nothing runs server-side.
 {
   "name": "voice-ai-skills",
-  "account_id": "c64bf5531f1988a38ec04598b5d7c57d",
   "compatibility_date": "2026-09-26",
   "assets": {
     "directory": "./dist",
