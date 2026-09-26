@@ -11,6 +11,8 @@ Read these first:
   for every adapter.
 - The [Q4 2026 roadmap](https://github.com/mahimailabs/voice-ai-skills/issues/1).
 
+Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Good first contributions
 
 Look for issues labelled

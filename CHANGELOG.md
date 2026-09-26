@@ -18,6 +18,7 @@ changes a claim, the entry names the skill and the stack.
   checks to run before a pull request.
 - Issue forms for adapter corrections, default challenges, new stacks, and tooling bugs;
   a pull request template; `CODEOWNERS`.
+- `CODE_OF_CONDUCT.md`: Contributor Covenant 2.1.
 
 ## [0.1.0] - 2026-09-16
 
