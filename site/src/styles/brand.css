@@ -1,0 +1,66 @@
+/* mahimai.ca brand, "signal on black": charcoal ground, one lavender signal, hairline rules.
+   Values mirror the @theme tokens in mahimai.ca's src/styles/global.css. The light theme is
+   derived from the same palette; its lavender is deepened to keep link contrast above 4.5:1. */
+:root {
+  --sl-font: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --sl-font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --sl-color-white: #fafafa;
+  --sl-color-gray-1: #e5e5e5;
+  --sl-color-gray-2: #d4d4d4;
+  --sl-color-gray-3: #a3a3a3;
+  --sl-color-gray-4: #737373;
+  --sl-color-gray-5: #262626;
+  --sl-color-gray-6: #171717;
+  --sl-color-black: #0a0a0a;
+
+  --sl-color-accent-low: #2a2139;
+  --sl-color-accent: #b48adc;
+  --sl-color-accent-high: #cba6f7;
+}
+
+:root[data-theme='light'] {
+  --sl-color-white: #0a0a0a;
+  --sl-color-gray-1: #171717;
+  --sl-color-gray-2: #262626;
+  --sl-color-gray-3: #525252;
+  --sl-color-gray-4: #737373;
+  --sl-color-gray-5: #e5e5e5;
+  --sl-color-gray-6: #f0f0f0;
+  --sl-color-gray-7: #f7f7f7;
+  --sl-color-black: #fcfcfc;
+
+  --sl-color-accent-low: #efe6fb;
+  --sl-color-accent: #6f3fb0;
+  --sl-color-accent-high: #3f1f6e;
+}
+
+h1, h2, h3, .site-title, .hero h1 {
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.hero h1 { letter-spacing: -0.045em; }
+
+/* data, code and measurements use tabular figures */
+code, pre, kbd, table td { font-variant-numeric: tabular-nums; }
+
+/* hairlines, not boxes: tables and asides sit on rules, not on cards */
+.sl-markdown-content table { border-collapse: collapse; }
+.sl-markdown-content :is(th, td) { border: 0; border-bottom: 1px solid var(--sl-color-gray-5); }
+
+/* lavender marks actions, links and data only: the title, asides and the current page stay ink */
+.site-title { color: var(--sl-color-white); }
+.starlight-aside {
+  background: var(--sl-color-gray-6);
+  border-inline-start-color: var(--sl-color-gray-4);
+}
+.starlight-aside .starlight-aside__title { color: var(--sl-color-white); }
+nav.sidebar a[aria-current='page'],
+nav.sidebar a[aria-current='page']:hover,
+nav.sidebar a[aria-current='page']:focus {
+  background: var(--sl-color-gray-6);
+  color: var(--sl-color-white);
+  box-shadow: inset 2px 0 0 var(--sl-color-accent-high);
+}
+.sl-markdown-content td:first-child a { white-space: nowrap; }

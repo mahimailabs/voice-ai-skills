@@ -8,6 +8,8 @@
 
 Engineering judgment for the coding agent building your voice agent.
 
+Read the skills on the web at [skills.mahimai.ca](https://skills.mahimai.ca).
+
 ![skills](https://img.shields.io/badge/skills-10-informational)
 [![Agent Skills](https://img.shields.io/badge/format-Agent_Skills-informational)](https://agentskills.io/specification)
 [![license](https://img.shields.io/badge/license-MIT-informational)](LICENSE)

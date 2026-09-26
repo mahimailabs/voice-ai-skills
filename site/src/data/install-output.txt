@@ -1,0 +1,10 @@
+$ npx skills add mahimailabs/voice-ai-skills --skill voice-agent-review --agent claude-code --yes
+o  Source: https://github.com/mahimailabs/voice-ai-skills.git
+o  Repository cloned
+o  Found 10 skills
+•  Selected 1 skill: voice-agent-review
+o  Installation complete
+o  Installed 1 skill
+     ✓ voice-agent-review (copied)
+       → ./.claude/skills/voice-agent-review
+—  Done!  Review skills before use; they run with full agent permissions.

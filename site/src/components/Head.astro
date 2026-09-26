@@ -1,0 +1,98 @@
+---
+// Starlight's head, plus the same PostHog project and reverse proxy as mahimai.ca. It only
+// loads on the production host, so dev servers and Pages previews send nothing. Every event
+// carries site: "voice-ai-skills" so the admin dashboard can separate it from mahimai.ca.
+import Default from '@astrojs/starlight/components/Head.astro';
+---
+
+<Default />
+<script is:inline>
+  (function () {
+    if (typeof window === 'undefined' || location.hostname !== 'skills.mahimai.ca') return;
+    !(function (t, e) {
+      var o, n, p, r;
+      e.__SV ||
+        (window.posthog && window.posthog.__loaded) ||
+        ((window.posthog = e),
+        (e._i = []),
+        (e.init = function (i, s, a) {
+          function g(t, e) {
+            var o = e.split('.');
+            (2 == o.length && ((t = t[o[0]]), (e = o[1])),
+              (t[e] = function () {
+                t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+              }));
+          }
+          p ||
+            (((p = t.createElement('script')).type = 'text/javascript'),
+            (p.crossOrigin = 'anonymous'),
+            (p.async = !0),
+            (p.src = s.api_host.replace('.i.posthog.com', '-assets.i.posthog.com') + '/static/array.js'),
+            (p.onerror = function () {
+              p = null;
+            }),
+            (r = t.getElementsByTagName('script')[0]).parentNode.insertBefore(p, r));
+          var u = e;
+          for (
+            void 0 !== a ? (u = e[a] = []) : (a = 'posthog'),
+              u.people = u.people || [],
+              u.toString = function (t) {
+                var e = 'posthog';
+                return ('posthog' !== a && (e += '.' + a), t || (e += ' (stub)'), e);
+              },
+              u.people.toString = function () {
+                return u.toString(1) + '.people (stub)';
+              },
+              o = 'init capture register register_once unregister identify reset get_distinct_id opt_in_capturing opt_out_capturing has_opted_out_capturing'.split(' '),
+              n = 0;
+            n < o.length;
+            n++
+          )
+            g(u, o[n]);
+          e._i.push([i, s, a]);
+        }),
+        (e.__SV = 1));
+    })(document, window.posthog || []);
+    window.posthog.init('phc_s2dddKHsS4kEnJ925VzsKYQh8hYGdohzEadc8CUhkoxV', {
+      api_host: 'https://m.mahimai.ca',
+      ui_host: 'https://us.posthog.com',
+      defaults: '2026-05-30',
+      person_profiles: 'identified_only',
+      capture_pageview: false,
+    });
+    window.posthog.register({ site: 'voice-ai-skills' });
+    window.posthog.capture('$pageview');
+    document.addEventListener('click', function (e) {
+      var el = e.target && e.target.closest ? e.target : null;
+      if (!el || !window.posthog) return;
+      // the copy button on a code block: which command was copied
+      var copy = el.closest('.expressive-code .copy button');
+      if (copy) {
+        var code = copy.closest('.expressive-code').querySelector('pre');
+        var text = code ? code.innerText : '';
+        window.posthog.capture('code_copy', {
+          install: /npx skills add/.test(text),
+          command: text.split('\n').find(function (l) { return /npx skills add/.test(l); }) || null,
+          path: location.pathname,
+        });
+        return;
+      }
+      var a = el.closest('a[href]');
+      if (!a) return;
+      var target = new URL(a.href, location.href);
+      var event = a.dataset.analytics
+        ? a.dataset.analytics
+        : target.hostname === 'github.com'
+          ? 'github_click'
+          : /(^|\.)mahimai\.ca$/.test(target.hostname) && target.hostname !== location.hostname
+            ? 'mahimai_click'
+            : null;
+      if (event)
+        window.posthog.capture(event, {
+          destination: target.origin + target.pathname,
+          path: location.pathname,
+          placement: a.closest('header') ? 'navigation' : a.closest('footer') ? 'footer' : a.closest('nav') ? 'sidebar' : 'page',
+        });
+    });
+  })();
+</script>
