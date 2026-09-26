@@ -1,0 +1,21 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default />
+<p class="studio">
+  Need a production review? <a href="https://mahimai.ca/services" data-analytics="services_cta_click">mahimai.ca/services</a>
+  <span aria-hidden="true">·</span>
+  <a href="https://mahimai.ca/privacy">Privacy</a>
+</p>
+
+<style>
+  .studio {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  .studio span { margin-inline: 0.5rem; }
+</style>

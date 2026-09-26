@@ -19,6 +19,9 @@ changes a claim, the entry names the skill and the stack.
 - Issue forms for adapter corrections, default challenges, new stacks, and tooling bugs;
   a pull request template; `CODEOWNERS`.
 - `CODE_OF_CONDUCT.md`: Contributor Covenant 2.1.
+- `site/`: the skills.mahimai.ca website, built with Astro Starlight. Every skill page, the
+  combined “Do not” page, and the neutrality policy are generated from the repository on
+  each build, and CI builds it on every pull request.
 
 ## [0.1.0] - 2026-09-16
 

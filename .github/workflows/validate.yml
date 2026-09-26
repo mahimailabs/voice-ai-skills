@@ -51,3 +51,19 @@ jobs:
         run: pip install 'livekit-agents==1.8.1' 'pipecat-ai[daily,deepgram,cartesia,openai,silero]==1.10.0' python-dotenv
       - name: SDK contracts with fake I/O
         run: python -m unittest discover -s tests/sdk -v
+
+  site:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: site/.nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - name: Build skills.mahimai.ca from the skills
+        run: npm run build
