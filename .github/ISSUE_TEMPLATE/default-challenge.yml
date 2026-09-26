@@ -1,0 +1,36 @@
+name: Challenge a default
+description: A default value is wrong for your case, and you have a measurement.
+title: "Default: <skill>: "
+labels: ["default"]
+body:
+  - type: markdown
+    attributes:
+      value: Defaults change against a measurement, never against a preference.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill and default
+      placeholder: "voice-turn-taking: min endpointing delay 0.5 s"
+    validations:
+      required: true
+  - type: textarea
+    id: symptom
+    attributes:
+      label: The symptom you saw
+      description: What went wrong for callers, and how often.
+    validations:
+      required: true
+  - type: textarea
+    id: measurement
+    attributes:
+      label: The measurement
+      description: What you measured, how, on how many calls, and the result.
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: Stack and version, transport (WebRTC or phone), language, and audio conditions.
+    validations:
+      required: true
