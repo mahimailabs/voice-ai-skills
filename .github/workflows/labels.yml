@@ -1,0 +1,29 @@
+name: labels
+
+# Labels are defined in .github/labels.json. This creates or updates them; it never deletes.
+on:
+  push:
+    paths:
+      - .github/labels.json
+      - .github/workflows/labels.yml
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create or update labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          for l in json.load(open(".github/labels.json")):
+              subprocess.run(["gh", "label", "create", l["name"], "--repo", "${{ github.repository }}",
+                              "--color", l["color"], "--description", l["description"], "--force"], check=True)
+              print("ok:", l["name"])
+          PY

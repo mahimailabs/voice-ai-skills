@@ -1,0 +1,9 @@
+[
+  {"name": "good first issue", "color": "7057ff", "description": "Small, well-scoped, a good place to start"},
+  {"name": "help wanted", "color": "008672", "description": "Open for anyone to pick up"},
+  {"name": "hacktoberfest", "color": "ff7518", "description": "Part of Hacktoberfest"},
+  {"name": "adapter", "color": "1d76db", "description": "A stack-specific adapter section"},
+  {"name": "default", "color": "fbca04", "description": "A default value in a skill's core"},
+  {"name": "new stack", "color": "5319e7", "description": "Proposal to support a new voice stack"},
+  {"name": "roadmap", "color": "0e8a16", "description": "Planning and tracking"}
+]
