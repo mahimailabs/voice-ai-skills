@@ -135,7 +135,8 @@ the skill explains how to resolve it from its own directory.
 
 Contributions for more coding agents and voice stacks are welcome. Keep engineering
 rules portable, give numerical claims a source or a stated rationale, and record the
-version and date for adapter claims. Include installation evidence before expanding
+version and date for adapter claims. Adapters follow the
+[vendor neutrality and adapter policy](docs/neutrality.md). Include installation evidence before expanding
 the tested-client matrix.
 
 ```sh

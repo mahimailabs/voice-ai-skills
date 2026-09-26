@@ -1,0 +1,38 @@
+# Changelog
+
+All notable changes to this collection are recorded here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+Adapter claims are pinned to a stack version and a verification date. When a refresh
+changes a claim, the entry names the skill and the stack.
+
+## [Unreleased]
+
+### Added
+
+- `docs/neutrality.md`: vendor neutrality rules for the core, required adapter fields,
+  criteria for adding a stack, refresh cadence, and conflict-of-interest disclosure.
+- `CHANGELOG.md`.
+
+## [0.1.0] - 2026-09-16
+
+First public collection.
+
+### Added
+
+- Ten skills in the Agent Skills format: `voice-agent-review`, `voice-agent-evals`,
+  `voice-full-duplex`, `voice-function-tools`, `voice-interruptions`,
+  `voice-latency-budget`, `voice-pipeline-choice`, `voice-prompting`,
+  `voice-telephony`, and `voice-turn-taking`.
+- Adapters for LiveKit Agents, Pipecat, and Vapi, each pinned to a version and a
+  verification date.
+- `voice-agent-review`: a 40-item checklist across eight groups and a report template.
+- Latency budget calculator, bundled inside `voice-latency-budget/scripts/`.
+- Clinic booking example on LiveKit and Pipecat, with shared confirmation state, tool
+  deadlines, filler, and timeout reconciliation.
+- Claude Code plugin marketplace entry.
+- Validation: `scripts/validate.py`, regression tests, the `skills-ref` reference
+  validator, and installer checks in copy and symlink modes in CI.
+- Compatibility, testing, and SDK verification docs.
+
