@@ -7,5 +7,7 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   },
-  "routes": [{ "pattern": "skills.mahimai.ca", "custom_domain": true }]
+  "routes": [{ "pattern": "skills.mahimai.ca", "custom_domain": true }],
+  // PR builds run `wrangler preview`, which requires this block; empty keeps the top-level settings
+  "previews": {}
 }
