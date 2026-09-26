@@ -12,8 +12,8 @@ import PauseDemo from '../components/PauseDemo.astro';
 import home from '../data/home.generated.json';
 
 const REPO = 'https://github.com/mahimailabs/voice-ai-skills';
-const one = 'npx skills add mahimailabs/voice-ai-skills --skill voice-agent-review';
-const all = "npx skills add mahimailabs/voice-ai-skills --skill '*'";
+// The installer asks which skills and which coding agents to install for, so one command is enough.
+const install = 'npx skills add mahimailabs/voice-ai-skills';
 const agents = ['Claude Code', 'Codex', 'Cursor', 'Gemini CLI', 'GitHub Copilot'];
 ---
 
@@ -36,7 +36,7 @@ const agents = ['Claude Code', 'Codex', 'Cursor', 'Gemini CLI', 'GitHub Copilot'
         <h1 id="hero-heading">Your coding agent builds voice agents like web apps.</h1>
         <p class="lede">Ten skills that teach it the decisions voice gets wrong.</p>
         <div class="hero-install">
-          <CopyCommand client:visible command={one} size="lg" />
+          <CopyCommand client:visible command={install} size="lg" />
         </div>
         <ul class="agents" aria-label="Works with">
           {agents.map((a) => <li>{a}</li>)}
@@ -88,10 +88,7 @@ const agents = ['Claude Code', 'Codex', 'Cursor', 'Gemini CLI', 'GitHub Copilot'
 
     <section class="chapter close" aria-labelledby="close-heading">
       <h2 id="close-heading">Score your agent before your callers do.</h2>
-      <div class="close-cmds">
-        <CopyCommand client:visible command={one} size="lg" />
-        <CopyCommand client:visible command={all} />
-      </div>
+      <CopyCommand client:visible command={install} size="lg" />
       <a class="repo" href={REPO}>MIT licensed, on GitHub <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" /></a>
     </section>
   </div>
@@ -117,7 +114,7 @@ const agents = ['Claude Code', 'Codex', 'Cursor', 'Gemini CLI', 'GitHub Copilot'
     text-wrap: balance;
   }
   .lede { margin: 1.5rem 0 0; max-width: 30rem; color: var(--sl-color-gray-3); font-size: clamp(1.0625rem, 1.7vw, 1.25rem); line-height: 1.55; }
-  .hero-install { max-width: 38rem; margin-top: 2.25rem; }
+  .hero-install { max-width: 34rem; margin-top: 2.25rem; }
   .agents { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
   .agents li {
     padding: 0.3rem 0.65rem;
@@ -151,8 +148,7 @@ const agents = ['Claude Code', 'Codex', 'Cursor', 'Gemini CLI', 'GitHub Copilot'
   .stamps dt { color: var(--sl-color-white); font-weight: 500; }
   .stamps dd { margin: 0; font-family: var(--__sl-font-mono); font-size: 0.875rem; color: var(--sl-color-gray-2); font-variant-numeric: tabular-nums; }
 
-  .close { display: grid; gap: 1.5rem; max-width: 44rem; padding-bottom: 3rem; }
-  .close-cmds { display: grid; gap: 0.75rem; }
+  .close { display: grid; gap: 1.5rem; max-width: 40rem; padding-bottom: 3rem; }
   .repo { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; }
 </style>
 
