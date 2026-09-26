@@ -1,0 +1,319 @@
+---
+// The home page. Authored, not Starlight's splash: mahimai.ca's chapter grammar (hairline
+// chapters on an 80rem shell, one instrument surface, one motion moment), with Starlight's
+// header, search and theme kept around it. Every piece of content comes from the repository:
+// home.generated.json is written by scripts/sync-skills.mjs from the README and the skills,
+// and review-excerpt.json is lifted verbatim from a real voice-agent-review run.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import CopyCommand from '../components/CopyCommand.astro';
+import ReviewReport from '../components/ReviewReport.astro';
+import home from '../data/home.generated.json';
+
+const REPO = 'https://github.com/mahimailabs/voice-ai-skills';
+const one = 'npx skills add mahimailabs/voice-ai-skills --skill voice-agent-review';
+const all = "npx skills add mahimailabs/voice-ai-skills --skill '*'";
+
+// The review skill leads; the other nine are grouped by the part of the call they govern.
+const byName = Object.fromEntries(home.skills.map((s) => [s.name, s]));
+const lead = byName['voice-agent-review'];
+const groups = [
+  { title: 'Who speaks, and when', names: ['voice-turn-taking', 'voice-interruptions', 'voice-full-duplex'] },
+  { title: 'What the agent says and does', names: ['voice-prompting', 'voice-function-tools'] },
+  { title: 'The pipeline underneath', names: ['voice-pipeline-choice', 'voice-latency-budget', 'voice-telephony'] },
+  { title: 'Knowing it works', names: ['voice-agent-evals'] },
+].map((g) => ({ ...g, skills: g.names.map((n) => byName[n]).filter(Boolean) }));
+const grouped = new Set(groups.flatMap((g) => g.names).concat('voice-agent-review'));
+const ungrouped = home.skills.filter((s) => !grouped.has(s.name));
+if (ungrouped.length) groups.push({ title: 'More', names: [], skills: ungrouped });
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Voice AI Skills',
+    description:
+      'Vendor-neutral engineering judgment for the coding agent building your voice agent. Ten skills, versioned adapters for LiveKit, Pipecat, and Vapi.',
+    template: 'splash',
+    editUrl: false,
+    prev: false,
+    next: false,
+    tableOfContents: false,
+  }}
+  hasSidebar={false}
+>
+  <div class="home not-content">
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-copy">
+        <h1 id="hero-heading">Engineering judgment for the coding agent building your voice agent.</h1>
+        <p class="lede">
+          A pause is not always the end of a turn. A cough should not cancel a reply. A booking needs a read-back
+          and a clear yes before the write. Ten skills teach your coding agent those decisions.
+        </p>
+        <div class="hero-install">
+          <CopyCommand command={one} label="Copy the install command for the review skill" />
+          <p class="note">
+            Then ask your coding agent to review your voice agent. <a href="/skills/voice-agent-review/">How the review scores</a>
+          </p>
+        </div>
+      </div>
+      <ReviewReport />
+    </section>
+
+    <section class="chapter" aria-labelledby="install-heading">
+      <div class="head">
+        <h2 id="install-heading">Install</h2>
+        <p>
+          The installer asks which coding agents to install for: Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot,
+          and other Agent Skills clients. It needs Node.js 22.20 or later; without Node, <a href={`${REPO}#install`}
+            >copy the folders by hand</a
+          >.
+        </p>
+      </div>
+      <div class="install-grid">
+        <div class="install-item">
+          <h3>Start with the review</h3>
+          <CopyCommand command={one} label="Copy the install command for the review skill" />
+        </div>
+        <div class="install-item">
+          <h3>Install all ten</h3>
+          <CopyCommand command={all} label="Copy the install command for every skill" />
+        </div>
+      </div>
+      <figure class="transcript">
+        <figcaption>Real installer output on a fresh project</figcaption>
+        <pre aria-label="Installer output">{home.transcript}</pre>
+      </figure>
+    </section>
+
+    <section class="chapter" aria-labelledby="try-heading">
+      <div class="head">
+        <h2 id="try-heading">Ask for a review, or bring a symptom</h2>
+        <p>In your coding agent, with a voice-agent project open. If your client does not pick skills on its own, name <code>voice-agent-review</code> or the skill you need.</p>
+      </div>
+      <ol class="prompts">
+        {
+          home.prompts.map((p) => (
+            <li>
+              <blockquote>{p}</blockquote>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="chapter" aria-labelledby="skills-heading">
+      <div class="head">
+        <h2 id="skills-heading">Ten skills, one per decision</h2>
+        <p>Each opens with a <a href="/do-not/">Do not list</a>: where a coding agent's default is wrong for voice.</p>
+      </div>
+      {
+        lead && (
+          <a class="lead" href={`/skills/${lead.name}/`}>
+            <span class="name">{lead.name}</span>
+            <span class="when">{lead.useWhen}</span>
+            <span class="decides">{lead.decides}</span>
+            <svg class="go" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+        )
+      }
+      <div class="groups">
+        {
+          groups.map((g) => (
+            <div class="group">
+              <h3>{g.title}</h3>
+              <ul>
+                {g.skills.map((s) => (
+                  <li>
+                    <a href={`/skills/${s.name}/`}>
+                      <span class="name">{s.name}</span>
+                      <span class="when">{s.useWhen}</span>
+                      <svg class="go" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="chapter" aria-labelledby="neutral-heading">
+      <div class="head">
+        <h2 id="neutral-heading">Vendor-neutral by rule</h2>
+        <p>
+          The core of every skill never recommends a provider. Each stack gets the same adapter fields, pinned to a
+          version and a date. This is what that looks like in <a href={home.stampsSource}>voice-interruptions</a>.
+          The rules are in the <a href="/neutrality/">neutrality policy</a>.
+        </p>
+      </div>
+      <dl class="stamps">
+        {
+          home.stamps.map((s) => (
+            <div>
+              <dt>{s.stack}</dt>
+              <dd>{s.pin}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="chapter close" aria-labelledby="close-heading">
+      <h2 id="close-heading">Score your agent before your callers do.</h2>
+      <CopyCommand command={one} label="Copy the install command for the review skill" />
+      <p class="note">MIT licensed. <a href={REPO}>Source, issues, and the Q4 roadmap on GitHub</a>.</p>
+    </section>
+  </div>
+</StarlightPage>
+
+<style>
+  .home {
+    --space-1: 0.5rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2.5rem;
+    --space-6: 4rem;
+    --space-7: 6rem;
+    color: var(--sl-color-gray-2);
+  }
+  .home a { color: var(--sl-color-text-accent); text-underline-offset: 0.2em; }
+  .home a:hover { color: var(--sl-color-white); }
+  .home code {
+    font-family: var(--__sl-font-mono);
+    font-size: 0.875em;
+    color: var(--sl-color-white);
+  }
+
+  /* ------------------------------------------------------------ hero */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-5) var(--space-6);
+  }
+  @media (min-width: 64rem) {
+    .hero { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: var(--space-6); align-items: center; padding-block: var(--space-6) var(--space-7); }
+  }
+  h1 {
+    max-width: 15ch;
+    margin: 0;
+    color: var(--sl-color-white);
+    font-size: clamp(2.5rem, 5.4vw, 4.75rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .lede {
+    max-width: 38rem;
+    margin: var(--space-4) 0 0;
+    color: var(--sl-color-gray-3);
+    font-size: clamp(1rem, 1.6vw, 1.125rem);
+    line-height: 1.7;
+  }
+  .hero-install { max-width: 40rem; margin-top: var(--space-5); }
+  .note { margin: var(--space-2) 0 0; color: var(--sl-color-gray-3); font-size: 0.875rem; line-height: 1.6; }
+
+  /* ------------------------------------------------------------ chapters */
+  .chapter {
+    border-top: 1px solid var(--sl-color-gray-5);
+    padding-block: var(--space-6);
+  }
+  .head { display: grid; gap: var(--space-3); max-width: 44rem; margin-bottom: var(--space-5); }
+  h2 {
+    margin: 0;
+    color: var(--sl-color-white);
+    font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .head p { margin: 0; color: var(--sl-color-gray-3); line-height: 1.7; }
+  h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--sl-color-white);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* install */
+  .install-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  @media (min-width: 56rem) { .install-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .transcript { margin: var(--space-5) 0 0; }
+  .transcript figcaption { color: var(--sl-color-gray-3); font-size: 0.875rem; margin-bottom: var(--space-2); }
+  .transcript pre {
+    margin: 0;
+    overflow-x: auto;
+    padding: var(--space-4);
+    border-top: 1px solid var(--sl-color-gray-5);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    font-family: var(--__sl-font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--sl-color-gray-3);
+    user-select: text;
+  }
+
+  /* prompts */
+  .prompts { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+  @media (min-width: 56rem) { .prompts { grid-template-columns: 1fr 1fr; } }
+  .prompts blockquote {
+    margin: 0;
+    padding: 0 0 0 var(--space-4);
+    border-left: 1px solid var(--sl-color-gray-4);
+    color: var(--sl-color-white);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 36rem;
+  }
+
+  /* skills */
+  .lead,
+  .group a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.25rem var(--space-3);
+    text-decoration: none;
+    color: inherit;
+  }
+  .home .lead, .home .group a { color: inherit; }
+  .lead {
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--sl-color-gray-5);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    margin-bottom: var(--space-5);
+  }
+  .name { font-family: var(--__sl-font-mono); font-size: 0.9375rem; color: var(--sl-color-white); }
+  .lead .name { font-size: 1.125rem; }
+  .when { grid-column: 1; color: var(--sl-color-gray-2); line-height: 1.55; max-width: 44rem; }
+  .decides { grid-column: 1; color: var(--sl-color-gray-3); font-size: 0.9375rem; line-height: 1.55; }
+  .go { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; grid-column: 2; grid-row: 1 / span 3; align-self: center; color: var(--sl-color-gray-4); transition: color 0.15s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  .lead:hover .go, .group a:hover .go, .lead:focus-visible .go, .group a:focus-visible .go { color: var(--sl-color-accent-high); transform: translateX(3px); }
+  .lead:hover .name, .group a:hover .name { color: var(--sl-color-accent-high); }
+  .groups { display: grid; gap: var(--space-5); }
+  @media (min-width: 56rem) { .groups { grid-template-columns: 1fr 1fr; gap: var(--space-5) var(--space-6); } }
+  .group ul { margin: 0; padding: 0; list-style: none; }
+  .group li + li { border-top: 1px solid var(--sl-color-gray-5); }
+  .group a { padding: var(--space-3) 0; }
+  .group .when { font-size: 0.9375rem; }
+
+  /* stamps: real adapter headers, as data */
+  .stamps { margin: 0; display: grid; }
+  .stamps div {
+    display: grid;
+    gap: 0.25rem var(--space-4);
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+  .stamps div:last-child { border-bottom: 1px solid var(--sl-color-gray-5); }
+  @media (min-width: 48rem) { .stamps div { grid-template-columns: 12rem 1fr; } }
+  .stamps dt { color: var(--sl-color-white); font-weight: 500; }
+  .stamps dd { margin: 0; font-family: var(--__sl-font-mono); font-size: 0.875rem; color: var(--sl-color-gray-2); font-variant-numeric: tabular-nums; }
+
+  /* close */
+  .close { display: grid; gap: var(--space-4); max-width: 44rem; padding-bottom: var(--space-5); }
+  .close .note { margin: 0; }
+</style>

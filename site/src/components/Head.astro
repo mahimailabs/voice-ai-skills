@@ -70,9 +70,11 @@ import Default from '@astrojs/starlight/components/Head.astro';
       if (copy) {
         var code = copy.closest('.expressive-code').querySelector('pre');
         var text = code ? code.innerText : '';
+        // an install counts only when the block is exactly one install command
+        var lines = text.trim().split('\n');
         window.posthog.capture('code_copy', {
-          install: /npx skills add/.test(text),
-          command: text.split('\n').find(function (l) { return /npx skills add/.test(l); }) || null,
+          install: lines.length === 1 && /^npx skills add /.test(lines[0]),
+          command: lines.length === 1 ? lines[0] : null,
           path: location.pathname,
         });
         return;
