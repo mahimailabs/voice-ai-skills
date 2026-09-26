@@ -1,0 +1,37 @@
+---
+// Replaces Starlight's native <select> with a segmented toggle (Radix ToggleGroup).
+import ThemeToggle from './ThemeToggle';
+---
+
+<ThemeToggle client:load />
+
+<style is:global>
+  .theme-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.625rem;
+    background: var(--sl-color-gray-6);
+  }
+  .theme-toggle__item {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 1.75rem;
+    border: 0;
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--sl-color-gray-3);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, box-shadow 0.2s ease;
+  }
+  .theme-toggle__item:hover { color: var(--sl-color-white); }
+  .theme-toggle__item[data-state='on'] {
+    background: var(--sl-color-black);
+    color: var(--sl-color-white);
+    box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 1px 3px rgb(0 0 0 / 0.35);
+  }
+  :root[data-theme='light'] .theme-toggle__item[data-state='on'] { box-shadow: 0 1px 2px rgb(0 0 0 / 0.12); }
+  .theme-toggle__item:focus-visible { outline: 2px solid var(--sl-color-accent-high); outline-offset: 1px; }
+</style>

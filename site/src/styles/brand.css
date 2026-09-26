@@ -83,3 +83,48 @@ a { text-underline-offset: 0.2em; }
 
 /* the home page carries its own h1; Starlight's page title stays for the document outline only */
 .content-panel:has(#_top):has(~ .content-panel .home) { display: none; }
+
+/* CopyCommand */
+.cmd {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-gray-6);
+  padding: 0.375rem 0.375rem 0.375rem 1rem;
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.03) inset;
+}
+.cmd code {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-family: var(--__sl-font-mono);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--sl-color-white);
+  background: none;
+  padding: 0.5rem 0;
+}
+.cmd--lg code { font-size: 0.9375rem; }
+.cmd__prompt { color: var(--sl-color-accent-high); margin-inline-end: 0.75ch; user-select: none; }
+.cmd__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: none;
+  height: 2.5rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-black);
+  color: var(--sl-color-gray-2);
+  font: 500 0.8125rem/1 var(--__sl-font);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.cmd__btn:hover { color: var(--sl-color-white); border-color: var(--sl-color-gray-4); }
+.cmd__btn:active { transform: scale(0.97); }
+.cmd__btn[data-done] { color: var(--sl-color-accent-high); border-color: color-mix(in srgb, var(--sl-color-accent-high) 40%, var(--sl-color-gray-5)); }
