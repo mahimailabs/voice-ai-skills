@@ -1,0 +1,41 @@
+name: Propose a stack
+description: Add adapters for a voice stack that is not covered yet.
+title: "Stack: "
+labels: ["adapter", "new stack"]
+body:
+  - type: markdown
+    attributes:
+      value: A new stack must meet the criteria in docs/neutrality.md, under "Adding a stack".
+  - type: input
+    id: stack
+    attributes:
+      label: Stack, and the version to pin
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: Official docs or source
+      description: Every adapter claim must be checkable here.
+    validations:
+      required: true
+  - type: textarea
+    id: mapping
+    attributes:
+      label: Mapping
+      description: How it covers the settings in voice-turn-taking, voice-interruptions, and voice-function-tools.
+    validations:
+      required: true
+  - type: input
+    id: maintainer
+    attributes:
+      label: Who does the first refresh after the initial pull request?
+    validations:
+      required: true
+  - type: textarea
+    id: disclosure
+    attributes:
+      label: Disclosure
+      description: Are you employed by, contracting for, or paid by this vendor?
+    validations:
+      required: true

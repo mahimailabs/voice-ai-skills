@@ -14,6 +14,10 @@ changes a claim, the entry names the skill and the stack.
 - `docs/neutrality.md`: vendor neutrality rules for the core, required adapter fields,
   criteria for adding a stack, refresh cadence, and conflict-of-interest disclosure.
 - `CHANGELOG.md`.
+- `CONTRIBUTING.md`: how to refresh an adapter, what is accepted and closed, and the
+  checks to run before a pull request.
+- Issue forms for adapter corrections, default challenges, new stacks, and tooling bugs;
+  a pull request template; `CODEOWNERS`.
 
 ## [0.1.0] - 2026-09-16
 

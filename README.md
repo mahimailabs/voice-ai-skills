@@ -133,7 +133,8 @@ the skill explains how to resolve it from its own directory.
 
 ## Contributing
 
-Contributions for more coding agents and voice stacks are welcome. Keep engineering
+Contributions for more coding agents and voice stacks are welcome. Start with
+[CONTRIBUTING.md](CONTRIBUTING.md) and the issues labelled `good first issue`. Keep engineering
 rules portable, give numerical claims a source or a stated rationale, and record the
 version and date for adapter claims. Adapters follow the
 [vendor neutrality and adapter policy](docs/neutrality.md). Include installation evidence before expanding

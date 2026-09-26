@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Q4 2026 roadmap
+    url: https://github.com/mahimailabs/voice-ai-skills/issues/1
+    about: What is planned, and where to help.
+  - name: Contributing guide
+    url: https://github.com/mahimailabs/voice-ai-skills/blob/main/CONTRIBUTING.md
+    about: How to refresh an adapter, and what we accept.

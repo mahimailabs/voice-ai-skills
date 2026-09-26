@@ -1,0 +1,46 @@
+name: Adapter correction
+description: An adapter claim is wrong or out of date for a stack.
+title: "Adapter: <skill> / <stack>: "
+labels: ["adapter"]
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+      placeholder: voice-turn-taking
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Stack and version
+      placeholder: Pipecat 1.10.0
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: The claim as written
+      description: Quote the line and give the file.
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: What the stack does now.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source
+      description: Vendor docs, API schema, or source code. Not a blog post.
+    validations:
+      required: true
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Pull request
+      options:
+        - label: I would like to open the pull request for this.
