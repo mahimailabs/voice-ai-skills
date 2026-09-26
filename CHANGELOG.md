@@ -26,6 +26,10 @@ changes a claim, the entry names the skill and the stack.
   real `voice-agent-review` run on the clinic example as its centerpiece, one-line copyable
   install commands, and the skills grouped by the part of the call they govern. The full
   report is published at `/example-review/`.
+- skills.mahimai.ca visuals: the review score drawn as bars, the turn-taking clinic case as
+  an animated timeline, the latency calculator's example as a budget chart, and the skills
+  as a map of one call. Built with anime.js and Radix primitives, including a segmented
+  light, dark, and auto theme toggle.
 
 ## [0.1.0] - 2026-09-16
 

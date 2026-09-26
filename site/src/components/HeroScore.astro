@@ -1,0 +1,86 @@
+---
+// The hero's proof: a real voice-agent-review run on examples/clinic-agent, drawn as data.
+// Numbers come from src/data/review-excerpt.json, taken from src/data/clinic-review.md.
+import { ArrowRight } from 'lucide-react';
+import r from '../data/review-excerpt.json';
+const [got, of] = r.score.split('/').map(Number);
+const groups = r.groups.map((g) => ({ name: g.name, value: Number(g.score.split('/')[0]), max: Number(g.score.split('/')[1]) }));
+---
+
+<figure class="score" data-score>
+  <div class="score__top">
+    <span class="score__skill">voice-agent-review</span>
+    <span class="score__target">clinic agent · LiveKit</span>
+  </div>
+  <p class="score__total" aria-label={`Score ${got} out of ${of}`}>
+    <span class="score__num" data-count={got}>{got}</span><span class="score__of">/{of}</span>
+  </p>
+  <ul class="bars" aria-label="Scores by group">
+    {
+      groups.map((g) => (
+        <li>
+          <span class="bars__name">{g.name}</span>
+          <span class="bars__track">
+            {Array.from({ length: g.max }, (_, i) => (
+              <span class="bars__cell" data-on={i < g.value || undefined} />
+            ))}
+          </span>
+          <span class="bars__val">{g.value}</span>
+        </li>
+      ))
+    }
+  </ul>
+  <figcaption class="score__foot">
+    <span><b>{r.hardFailures.length}</b> hard fail</span>
+    <span><b>{r.fixes.length}</b> fixes, with file:line</span>
+    <a href="/example-review/">Full report <ArrowRight size={14} strokeWidth={1.75} aria-hidden="true" /></a>
+  </figcaption>
+</figure>
+
+<script>
+  import { animate, stagger } from 'animejs';
+  const root = document.querySelector<HTMLElement>('[data-score]');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (root && !still) {
+    const num = root.querySelector<HTMLElement>('[data-count]')!;
+    const target = Number(num.dataset.count);
+    const counter = { v: 0 };
+    animate(counter, { v: target, duration: 1400, ease: 'outExpo', delay: 250, modifier: Math.round, onUpdate: () => (num.textContent = String(counter.v)) });
+    animate(root.querySelectorAll('.bars__cell[data-on]'), {
+      scaleX: [0, 1],
+      opacity: [0, 1],
+      duration: 520,
+      ease: 'outExpo',
+      delay: stagger(38, { start: 350 }),
+    });
+  }
+</script>
+
+<style>
+  .score {
+    margin: 0;
+    padding: 1.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1rem;
+    background:
+      radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--sl-color-accent-high) 9%, transparent), transparent 60%),
+      var(--sl-color-gray-6);
+    box-shadow: 0 24px 60px -30px rgb(0 0 0 / 0.6);
+  }
+  .score__top { display: flex; justify-content: space-between; gap: 1rem; font-family: var(--__sl-font-mono); font-size: 0.75rem; color: var(--sl-color-gray-3); }
+  .score__skill { color: var(--sl-color-white); }
+  .score__total { margin: 1.25rem 0 1.5rem; display: flex; align-items: baseline; font-family: var(--__sl-font-mono); line-height: 0.9; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .score__num { font-size: clamp(4rem, 9vw, 6.5rem); color: var(--sl-color-accent-high); min-width: 2ch; }
+  .score__of { font-size: clamp(1.5rem, 3vw, 2.25rem); color: var(--sl-color-gray-4); }
+  .bars { display: grid; gap: 0.625rem; margin: 0; padding: 0; list-style: none; }
+  .bars li { display: grid; grid-template-columns: 7.5rem 1fr 1.25rem; align-items: center; gap: 0.75rem; }
+  .bars__name { font-size: 0.8125rem; color: var(--sl-color-gray-3); }
+  .bars__track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .bars__cell { height: 0.5rem; border-radius: 2px; background: var(--sl-color-gray-5); transform-origin: left center; }
+  .bars__cell[data-on] { background: var(--sl-color-accent-high); }
+  .bars__val { font-family: var(--__sl-font-mono); font-size: 0.8125rem; color: var(--sl-color-white); text-align: right; font-variant-numeric: tabular-nums; }
+  .score__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--sl-color-gray-5); font-size: 0.8125rem; color: var(--sl-color-gray-3); }
+  .score__foot b { color: var(--sl-color-white); font-weight: 500; font-family: var(--__sl-font-mono); }
+  .score__foot a { margin-left: auto; display: inline-flex; align-items: center; gap: 0.3rem; color: var(--sl-color-text-accent); text-decoration: none; }
+  .score__foot a:hover { color: var(--sl-color-white); }
+</style>

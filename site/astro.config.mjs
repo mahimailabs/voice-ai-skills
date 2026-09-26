@@ -1,9 +1,11 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://skills.mahimai.ca',
   integrations: [
+    react(),
     starlight({
       title: 'Voice AI Skills',
       description: 'Vendor-neutral engineering judgment for the coding agent building your voice agent.',
@@ -11,6 +13,11 @@ export default defineConfig({
       head: [
         { tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' } },
         { tag: 'link', attrs: { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' } },
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://skills.mahimai.ca/og.png' } },
+        { tag: 'meta', attrs: { property: 'og:image:width', content: '2244' } },
+        { tag: 'meta', attrs: { property: 'og:image:height', content: '701' } },
+        { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+        { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://skills.mahimai.ca/og.png' } },
       ],
       expressiveCode: {
         styleOverrides: {
@@ -29,6 +36,7 @@ export default defineConfig({
         Head: './src/components/Head.astro',
         ThemeProvider: './src/components/ThemeProvider.astro',
         Footer: './src/components/Footer.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
       },
       sidebar: [
         { label: 'Start', items: [{ label: 'Home', link: '/' }, { label: 'Every “Do not”', link: '/do-not/' }, { label: 'Example review', link: '/example-review/' }] },
