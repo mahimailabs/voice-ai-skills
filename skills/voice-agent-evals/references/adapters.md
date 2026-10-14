@@ -5,17 +5,25 @@ the version each claim was checked against. These drift. Re-verify before you sh
 
 ## LiveKit Agents
 
-Pinned to livekit-agents 1.8.1 (Python), docs rendered 11 September 2026. Simulations
+Pinned to livekit-agents 1.8.7 (Python), verified 14 October 2026. Simulations
 need LiveKit CLI v2.16.4 or later, and v2.18.3 or later for audio runs.
+
+| this skill | LiveKit Agents |
+| --- | --- |
+| deterministic turn assertions | `RunResult.expect` event assertions |
+| full-conversation judging | `JudgeGroup` with built-in or custom judges |
+| text regression suite | `lk agent simulate text --scenarios scenarios.yaml` |
+| audio regression suite | `lk agent simulate audio --scenarios scenarios.yaml` |
+| write-tool isolation | `mock_tools(..., session=session)` (Python only) |
+| per-turn latency | `ChatMessage.metrics` from `conversation_item_added` |
 
 ### The eight judges
 
-`livekit.agents.evals` exports exactly `EvaluationResult`, `Evaluator`, `JudgeGroup`,
-`Judge`, `JudgmentResult`, `Verdict`, and eight factory functions: `accuracy_judge`,
+`livekit.agents.evals` ships eight factory functions: `accuracy_judge`,
 `coherence_judge`, `conciseness_judge`, `handoff_judge`, `relevancy_judge`,
 `safety_judge`, `task_completion_judge`, `tool_use_judge`. Each is called with parens.
 `handoff_judge()` passes automatically when no handoff occurred.
-Source: https://docs.livekit.io/agents/start/testing/test-framework.md
+Source: https://docs.livekit.io/testing/unit-tests/
 
 `JudgeGroup(llm=..., judges=[...])` takes keyword arguments only. `llm` accepts an LLM
 instance or a model string routed through LiveKit Inference. `JudgeGroup` and
@@ -36,8 +44,9 @@ assert result.all_passed, f"Some judges failed: {result.judgments}"
 
 `EvaluationResult` carries `score` (1.0 pass, 0.5 maybe, 0.0 fail), `all_passed`,
 `any_passed`, `majority_passed`, `none_failed`, and `judgments` keyed by judge name.
-Each `JudgmentResult` has `verdict`, `reasoning`, and `passed` / `failed` / `uncertain`.
-Source: https://docs.livekit.io/agents/start/testing/test-framework.md
+Each `JudgmentResult` has `verdict`, `reasoning`, `instructions`, and `passed` /
+`failed` / `uncertain`.
+Source: https://docs.livekit.io/testing/unit-tests/
 
 ### Assertions
 
@@ -47,7 +56,7 @@ keyword-only, and `input_modality` defaults to `"text"`. Walk the events with
 "agent_handoff")`, close with `result.expect.no_more_events()`, and assert with
 `is_message(role=...)`, `is_function_call(name=...)`, `is_function_call_output()`, or
 `contains_message(role=...)`. Indexing works too: `result.expect[0:2]`.
-Source: https://docs.livekit.io/agents/start/testing/test-framework.md
+Source: https://docs.livekit.io/testing/unit-tests/
 
 Per-message judging is `await ...judge(llm, intent="...")`: the LLM is positional,
 `intent` is keyword-only, and the message is judged without surrounding context.
@@ -59,7 +68,7 @@ Subclass `Judge`, call `super().__init__(name="...")`, and override
 `async def evaluate(self, *, chat_ctx, reference=None, llm=None) -> JudgmentResult`.
 No model call is required inside it. Any object with a `name` property and that
 `evaluate` signature satisfies the `Evaluator` protocol and can sit in a `JudgeGroup`.
-Source: https://docs.livekit.io/agents/start/testing/test-framework.md
+Source: https://docs.livekit.io/testing/unit-tests/
 
 ```python
 from livekit.agents.evals import Judge, JudgmentResult
@@ -80,7 +89,7 @@ Without `session` it is a context manager for tests. With `session=session` it a
 for the session lifetime; pass `{}` to clear. Mocks intercept execution only, so the
 model still sees the real schema. Returning an exception instance makes the tool raise.
 In Python the mock receives only the parameters it declares.
-Source: https://github.com/livekit/agents/blob/main/livekit-agents/livekit/agents/voice/run_result.py
+Source: https://docs.livekit.io/testing/unit-tests/
 
 ```python
 from livekit.agents import mock_tools
@@ -94,12 +103,13 @@ with mock_tools(ClinicAgent, {"book_appointment": lambda: RuntimeError("booking 
 
 ### Text and audio simulation
 
-Text is the default mode for `lk agent simulate`; there is no `--text` flag, and a
-text run automatically disables STT, TTS, VAD, and audio input and output.
-Top-level options: `-n/--num-simulations`, `--scenarios <file>`, `--concurrency <n>`
-(defaults to 15, explicit maximum 20, project limit 30), `--agent-name <name>`
-(requires `--scenarios`), `-y/--yes`, `--view <run-id>`, `--export <run-id>`.
-Source: https://docs.livekit.io/agents/start/testing/simulations.md
+Text is the default simulation mode, but the current CLI requires its explicit `text`
+subcommand; bare `lk agent simulate` prints help. A text run automatically disables
+STT, TTS, VAD, and audio input and output. Use `--agent-name` with `--scenarios` to
+grade an already-running agent. Per-run concurrency defaults to 15 and project-wide
+concurrency is 30.
+TRAP: `lk agent simulate --scenarios ...` no longer starts a text run. Insert `text`.
+Source: https://docs.livekit.io/testing/simulations/
 
 Audio is a subcommand: `lk agent simulate audio --scenarios scenarios.yaml`. The
 simulated user joins the room and publishes an audio track, your STT, TTS, and VAD run
@@ -107,18 +117,20 @@ and are billed, and the run executes in real time. Three degradation flags exist
 are boolean, with no intensity argument: `--background-noise` (surfaces endpointing
 that triggers on noise), `--low-quality-microphone` (surfaces transcription errors on
 names, numbers, and codes), `--packet-loss` (surfaces clipped speech handling).
-Source: https://docs.livekit.io/agents/start/testing/simulations.md
+Source: https://docs.livekit.io/testing/simulations/
 
-There is NO accent flag and no voice-selection option. The scenario file has exactly
-five fields: `label`, `instructions`, `agent_expectations`, `tags`, `userdata`. Put the
-accent in the free-text `instructions` persona. Treat accent simulation as unavailable.
-Source: https://docs.livekit.io/agents/start/testing/simulations.md
+There is no accent flag or voice-selection option. Put language or regional-speaker
+requirements in the scenario instructions; mixed speech runs in the non-English
+language. The file has a top-level name and scenario list, and `userdata` is available
+from `ctx.simulation_context()` for deterministic state.
+TRAP: accent is not a CLI setting. Describe it in the scenario instead.
+Source: https://docs.livekit.io/testing/simulations/
 
 An audio run reports end-to-end latency at p50, p95, and p99 (negative means the agent
 talked over the caller) and breaks it down by stage: STT and endpointing delay, LLM
 time to first token and first sentence, tokens per second, and TTS time to first byte.
 That is the latency number to publish beside the pass rate.
-Source: https://docs.livekit.io/agents/start/testing/simulations.md
+Source: https://docs.livekit.io/testing/simulations/
 
 ### Latency in production runs
 
@@ -126,7 +138,7 @@ Per-turn latency is on `ChatMessage.metrics`, read from the `conversation_item_a
 event. Keys include `end_of_turn_delay`, `transcription_delay`, `llm_node_ttft`,
 `tts_node_ttfb`, and `e2e_latency`. `MetricsReport` is a total=False TypedDict, so read
 every key with `.get()`. The session-level `metrics_collected` event is deprecated.
-Source: https://docs.livekit.io/deploy/observability/data/
+Source: https://docs.livekit.io/testing/observability/data/
 
 ## Pipecat
 

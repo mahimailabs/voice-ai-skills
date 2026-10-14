@@ -9,6 +9,12 @@ changes a claim, the entry names the skill and the stack.
 
 ## [Unreleased]
 
+### Changed
+
+- `voice-agent-evals`: refresh the LiveKit Agents adapter to 1.8.7. The CLI now
+  requires the explicit `simulate text` subcommand; current simulation, scenario,
+  metrics links, and adapter-policy fields are updated.
+
 ### Added
 
 - `docs/neutrality.md`: vendor neutrality rules for the core, required adapter fields,

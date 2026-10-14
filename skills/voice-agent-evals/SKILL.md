@@ -151,16 +151,16 @@ Full mappings, flags, and per-claim doc URLs: [references/adapters.md](reference
 
 ### LiveKit Agents
 
-Pinned to LiveKit Agents 1.8.1, verified 11 September 2026. The eight judge names map
-to the eight factories in `livekit.agents.evals`. Text simulation is the default; audio
-is a subcommand carrying three degradation flags and no accent flag.
+Pinned to LiveKit Agents 1.8.7, verified 14 October 2026. The eight judge names map
+to the eight factories in `livekit.agents.evals`. Run text simulation with the explicit
+`text` subcommand; audio carries three degradation flags and no accent flag.
 ```python
 from livekit.agents.evals import JudgeGroup, accuracy_judge, tool_use_judge
 judges = JudgeGroup(llm="openai/gpt-4o-mini", judges=[accuracy_judge(), tool_use_judge()])
 result = await judges.evaluate(session.history)
 assert result.all_passed, result.judgments
 ```
-Docs: https://docs.livekit.io/agents/start/testing/test-framework.md
+Docs: https://docs.livekit.io/testing/unit-tests/
 
 ### Pipecat
 
