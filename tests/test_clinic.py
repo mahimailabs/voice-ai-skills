@@ -95,6 +95,8 @@ class BookingTests(unittest.IsolatedAsyncioTestCase):
     async def test_all_reads_have_safe_timeout_and_interruptible_filler(self):
         async def slow(*args):
             await asyncio.sleep(1)
+        # Windows timers tick every ~15 ms, so a 20 ms deadline can fire before a 1 ms filler.
+        self.clinic.timeout = .2
         for name, action in [('availability', lambda: self.clinic.availability('any', 'next week', 'routine', self.speak)),
                              ('find_patient', lambda: self.clinic.lookup('Dana Whitfield','1980-03-04',self.speak))]:
             self.clinic.user_turn('try the read')

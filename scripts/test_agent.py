@@ -29,7 +29,7 @@ def main():
     if not runner or not any('{prompt}' in value for value in runner):
         parser.error("provide a native CLI command containing a {prompt} argument")
     args.output.mkdir(parents=True, exist_ok=False)
-    cases = json.loads((ROOT/'tests/agents/cases.json').read_text())
+    cases = json.loads((ROOT/'tests/agents/cases.json').read_text(encoding='utf-8'))
     if args.case:
         unknown = set(args.case) - {case['id'] for case in cases}
         if unknown:
@@ -56,8 +56,8 @@ def main():
                 output = output.decode(errors='replace') if isinstance(output, bytes) else output
                 error = error.decode(errors='replace') if isinstance(error, bytes) else error
                 code = 'timeout'
-            (args.output/f"{case['id']}.stdout.txt").write_text(output)
-            (args.output/f"{case['id']}.stderr.txt").write_text(error)
+            (args.output/f"{case['id']}.stdout.txt").write_text(output, encoding='utf-8')
+            (args.output/f"{case['id']}.stderr.txt").write_text(error, encoding='utf-8')
             reports.append({**case, 'agent': args.agent, 'exit_code': code,
                             'named_expected_skill': case['expected_skill'] in output,
                             'acceptance': 'needs trace and criteria review'})

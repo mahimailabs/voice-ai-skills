@@ -40,6 +40,30 @@ class PackagingTests(unittest.TestCase):
             self.assertTrue(any('does not resolve' in f for f in failures))
             self.assertTrue(any('escapes' in f for f in failures))
 
+    def test_oversized_body_is_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            installed = Path(folder)/'voice-prompting'
+            shutil.copytree(ROOT/'skills/voice-prompting', installed)
+            skill = installed/'SKILL.md'
+            text = skill.read_text(encoding='utf-8')
+            skill.write_text(text + ('x' * 99 + '\n') * 250, encoding='utf-8')
+            failures = []
+            validator.check_skill(str(installed), failures)
+            self.assertTrue(any('bytes, max is' in f for f in failures), failures)
+
+    def test_body_size_excludes_frontmatter(self):
+        with tempfile.TemporaryDirectory() as folder:
+            installed = Path(folder)/'voice-prompting'
+            shutil.copytree(ROOT/'skills/voice-prompting', installed)
+            skill = installed/'SKILL.md'
+            text = skill.read_text(encoding='utf-8')
+            body = text.split('\n---\n', 1)[1]
+            padding = validator.MAX_BODY_BYTES - len(body.encode('utf-8')) - 1
+            skill.write_text(' ' + text + 'x' * padding, encoding='utf-8')
+            failures = []
+            validator.check_skill(str(installed), failures)
+            self.assertFalse(any('bytes, max is' in f for f in failures), failures)
+
     def test_duplicate_metadata_is_rejected(self):
         with self.assertRaises(validator.Failure):
             validator.parse_frontmatter('---\nname: first\nname: second\n---\n', 'test')

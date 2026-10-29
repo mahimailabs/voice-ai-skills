@@ -7,7 +7,9 @@ follow relative references; running the optional helper also requires shell acce
 and Python 3.10+. SDK verification needs official documentation access or supplied
 version-matched documentation. No particular MCP server is mandatory.
 
-## Evidence as of September 16, 2026
+## Evidence
+
+The table records checks as of September 16, 2026. Later checks below carry their own date.
 
 | Client target | Documented project location | Local installer checks | Native model acceptance |
 | --- | --- | --- | --- |
@@ -24,6 +26,11 @@ and calculator execution after installation. Four targets share the canonical
 `.agents/skills/` tree; these are not four independent model sessions. Claude's
 marketplace manifest also validates, but marketplace installation and authenticated
 model sessions are separate from the local installer test.
+
+Codex CLI 0.165.0 also reads that marketplace file. On October 29, 2026,
+`codex plugin marketplace add` on a local checkout followed by
+`codex plugin add voice-ai@voice-ai-skills` installed all ten skills into the Codex
+plugin cache. That is an install check, not a model session.
 
 The native Claude Code review trace loaded `voice-agent-review`, its checklist, and
 its report template, then returned the eight-group, 40-point format, hard failures,

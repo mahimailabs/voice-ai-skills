@@ -22,6 +22,8 @@ NAME_MAX = 64
 DESC_MIN = 1
 DESC_MAX = 1024
 MAX_LINES = 500
+# Antigravity refuses a SKILL.md body (after frontmatter) over 24,000 bytes.
+MAX_BODY_BYTES = 24_000
 
 REQUIRED_HEADINGS = ["## Use this when", "## Do not", "## Adapters"]
 NO_ADAPTERS = {"voice-agent-review"}
@@ -132,6 +134,17 @@ def check_skill(skill_dir: str, failures: list) -> None:
     line_count = len(text.split("\n"))
     if line_count > MAX_LINES:
         failures.append(f"{path}: {line_count} lines, max is {MAX_LINES}")
+
+    # the body starts after the closing delimiter that parse_frontmatter accepted
+    lines = text.split("\n")
+    end = lines.index("---", 1) if "---" in lines[1:] else -1
+    body = "\n".join(lines[end + 1:])
+    body_bytes = len(body.encode("utf-8"))
+    if body_bytes > MAX_BODY_BYTES:
+        failures.append(
+            f"{path}: body is {body_bytes} bytes, max is {MAX_BODY_BYTES}. "
+            f"Move detail into references/."
+        )
 
     headings = REQUIRED_HEADINGS if folder not in NO_ADAPTERS else REQUIRED_HEADINGS[:-1]
     for heading in headings:

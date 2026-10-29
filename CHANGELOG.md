@@ -11,6 +11,14 @@ changes a claim, the entry names the skill and the stack.
 
 ### Added
 
+- Codex plugin install instructions. Codex installs `voice-ai@voice-ai-skills` from the
+  existing marketplace file.
+- `scripts/validate.py` rejects a `SKILL.md` body over 24,000 bytes, the Antigravity
+  load limit.
+- CI runs the validator and unit tests on Windows, and `.gitattributes` keeps LF line
+  endings on every checkout.
+- Dependabot for GitHub Actions and the site's npm packages.
+
 - `docs/neutrality.md`: vendor neutrality rules for the core, required adapter fields,
   criteria for adding a stack, refresh cadence, and conflict-of-interest disclosure.
 - `CHANGELOG.md`.
@@ -30,6 +38,12 @@ changes a claim, the entry names the skill and the stack.
   an animated timeline, the latency calculator's example as a budget chart, and the skills
   as a map of one call. Built with anime.js and Radix primitives, including a segmented
   light, dark, and auto theme toggle.
+
+### Changed
+
+- GitHub Actions are pinned to commit SHAs, workflows default to read-only
+  `contents` permission, and checkouts do not persist credentials.
+- `python-dotenv` is pinned in the SDK contract job.
 
 ## [0.1.0] - 2026-09-16
 

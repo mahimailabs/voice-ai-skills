@@ -5,5 +5,7 @@
   {"name": "adapter", "color": "1d76db", "description": "A stack-specific adapter section"},
   {"name": "default", "color": "fbca04", "description": "A default value in a skill's core"},
   {"name": "new stack", "color": "5319e7", "description": "Proposal to support a new voice stack"},
-  {"name": "roadmap", "color": "0e8a16", "description": "Planning and tracking"}
+  {"name": "roadmap", "color": "0e8a16", "description": "Planning and tracking"},
+  {"name": "deps", "color": "0366d6", "description": "Dependency and pinned-version updates"},
+  {"name": "ci", "color": "ededed", "description": "GitHub Actions and repository checks"}
 ]

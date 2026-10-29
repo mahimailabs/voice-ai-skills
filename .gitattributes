@@ -1,0 +1,5 @@
+# Skills, scripts, and workflows are parsed line by line. Keep LF on every platform,
+# including Windows checkouts with core.autocrlf enabled.
+* text=auto eol=lf
+*.png binary
+*.ico binary
