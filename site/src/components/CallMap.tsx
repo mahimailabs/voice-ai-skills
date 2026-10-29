@@ -7,7 +7,7 @@ type Skill = { name: string; title: string; decides: string; useWhen: string };
 
 // One call, left to right. Each skill sits at the part of the call it governs.
 const STAGES = [
-  { id: 'build', label: 'Pipeline', Icon: Workflow, names: ['voice-pipeline-choice', 'voice-full-duplex'] },
+  { id: 'build', label: 'Pipeline', Icon: Workflow, names: ['voice-agent-spec', 'voice-pipeline-choice', 'voice-full-duplex'] },
   { id: 'listen', label: 'Listening', Icon: Ear, names: ['voice-turn-taking', 'voice-interruptions'] },
   { id: 'speak', label: 'Speaking and acting', Icon: MessageSquareText, names: ['voice-prompting', 'voice-function-tools'] },
   { id: 'speed', label: 'Speed', Icon: Gauge, names: ['voice-latency-budget'] },

@@ -26,7 +26,7 @@ MAX_LINES = 500
 MAX_BODY_BYTES = 24_000
 
 REQUIRED_HEADINGS = ["## Use this when", "## Do not", "## Adapters"]
-NO_ADAPTERS = {"voice-agent-review"}
+NO_ADAPTERS = {"voice-agent-review", "voice-agent-spec"}
 
 # Each "### <stack>" under "## Adapters" opens with a machine-readable stamp, so the
 # drift report can compare pins with releases. The prose must state the same date.

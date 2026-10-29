@@ -10,8 +10,10 @@
     {
       "name": "voice-ai",
       "source": "./",
-      "skills": ["./skills"],
-      "description": "Ten skills that teach a coding agent the engineering judgment behind voice agents: pipeline choice, turn-taking, interruptions, latency budgets, prompting for speech, function tools, telephony, evals, full-duplex models, and a review checklist.",
+      "skills": [
+        "./skills"
+      ],
+      "description": "Eleven skills that teach a coding agent the engineering judgment behind voice agents: pipeline choice, turn-taking, interruptions, latency budgets, prompting for speech, function tools, telephony, evals, full-duplex models, a design spec, and a review checklist.",
       "version": "0.1.0",
       "author": {
         "name": "Mahimai Raja J",
@@ -31,6 +33,7 @@
         "voice-telephony",
         "voice-agent-evals",
         "voice-full-duplex",
+        "voice-agent-spec",
         "voice-agent-review",
         "voice-ai",
         "voice-agents",

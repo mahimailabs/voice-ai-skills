@@ -8,9 +8,11 @@ and the number, never for a method signature.
    Where a skill says "verify against current docs", that is an instruction.
 2. `examples/clinic-agent/` is the worked example for six of the eight review groups. It
    carries no telephony and no eval suite on purpose. The same clinic agent is in every skill.
-3. `skills/voice-agent-review/` is the entry point when you are asked to review,
-   audit, or production-check a voice agent. It scores and routes to eight of the other
-   nine; voice-full-duplex is reached through voice-pipeline-choice.
+3. `skills/voice-agent-spec/` is the entry point before code: it writes the design one
+   section per review group and has it scored. `skills/voice-agent-review/` is the entry
+   point when you are asked to review, audit, or production-check a voice agent. It
+   scores and routes to eight of the other ten; voice-full-duplex is reached through
+   voice-pipeline-choice.
 4. Start from the `## Do not` list. It is where a coding agent's default behavior is
    wrong for voice, and it is the highest-value part of every file.
 5. Numbers here are defaults with a stated range and a symptom. Change one against a
