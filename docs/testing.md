@@ -40,7 +40,7 @@ Use a separate environment with the versions recorded in [SDK verification](sdk-
 
 ```sh
 uv venv .venv
-uv pip install --python .venv/bin/python 'livekit-agents==1.8.1' 'pipecat-ai[daily,deepgram,cartesia,openai,silero]==1.10.0' python-dotenv
+uv pip install --python .venv/bin/python 'livekit-agents==1.8.1' 'pipecat-ai[daily,deepgram,cartesia,openai,silero]==1.10.0' 'python-dotenv==1.2.4'
 .venv/bin/python -m unittest discover -s tests/sdk -v
 ```
 

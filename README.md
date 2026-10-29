@@ -70,6 +70,13 @@ Claude Code also supports this repository as a plugin:
 /plugin install voice-ai@voice-ai-skills
 ```
 
+Codex reads the same marketplace file:
+
+```sh
+codex plugin marketplace add mahimailabs/voice-ai-skills
+codex plugin add voice-ai@voice-ai-skills
+```
+
 </details>
 
 Installation is tested in copy and symlink modes for the five named client targets,

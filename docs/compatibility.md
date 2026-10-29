@@ -25,6 +25,11 @@ and calculator execution after installation. Four targets share the canonical
 marketplace manifest also validates, but marketplace installation and authenticated
 model sessions are separate from the local installer test.
 
+Codex CLI 0.165.0 also reads that marketplace file. On October 29, 2026,
+`codex plugin marketplace add` on a local checkout followed by
+`codex plugin add voice-ai@voice-ai-skills` installed all ten skills into the Codex
+plugin cache. That is an install check, not a model session.
+
 The native Claude Code review trace loaded `voice-agent-review`, its checklist, and
 its report template, then returned the eight-group, 40-point format, hard failures,
 and three ordered fixes without inventing file evidence. The Codex review trace met
