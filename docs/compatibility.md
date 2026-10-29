@@ -40,7 +40,7 @@ resolved `scripts/latency_budget.py` from the installed skill directory, execute
 helper, compared the measured stages, and selected endpointing as the first fix.
 
 **This is installation evidence, not a promise that every coding agent follows every
-rule.** Use the [native acceptance cases](../tests/agents/cases.json) and
+rule.** Use the [behavioral scenarios](../tests/scenarios/) and
 [test procedure](testing.md) before calling another client behavior-tested. Remote
 installation from GitHub sees published commits, not uncommitted local changes.
 

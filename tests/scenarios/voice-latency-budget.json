@@ -1,0 +1,68 @@
+{
+  "skill": "voice-latency-budget",
+  "scenarios": [
+    {
+      "id": "latency-helper",
+      "prompt": "Analyze this cascade voice turn: EOT 700 ms, TTFT 620 ms, TTFB 240 ms, E2E 1560 ms. Use the installed latency skill and its bundled calculator. Name the skill and show the first fix. Resolve the helper from the skill directory, not this project's working directory.",
+      "required": [
+        {
+          "pattern": "endpoint|end[- ]of[- ]turn|\\bEOT\\b",
+          "why": "Names end of turn as the first fix"
+        },
+        {
+          "pattern": "700",
+          "why": "Uses the measured EOT number"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "first fix(?: is)?:? (?:to )?(?:the |a )?(?:LLM|model|faster model|swap|TTFT)",
+          "why": "Must not pick the LLM before endpointing"
+        }
+      ],
+      "criteria": [
+        "Runs the packaged helper from its installed directory",
+        "Returns a measured stage comparison",
+        "Names endpointing as the first fix"
+      ],
+      "examples": {
+        "pass": "voice-latency-budget: EOT 700 ms is the largest stage. First fix: endpointing delay, then TTFT 620 ms.",
+        "fail": "voice-latency-budget: first fix is the LLM, swap to a faster model. EOT 700 ms is fine."
+      }
+    },
+    {
+      "id": "latency-single-number",
+      "prompt": "Our dashboard shows average voice latency 900 ms across all turns, measured from my laptop on office Wi-Fi. Is our latency good? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "p95",
+          "why": "Asks for p95"
+        },
+        {
+          "pattern": "phone|real call|PSTN|SIP",
+          "why": "Measures on a real call"
+        },
+        {
+          "pattern": "per stage|each stage|stage",
+          "why": "Breaks it down by stage"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(yes|that is|that's) (good|fine|great)\\b",
+          "why": "Must not bless one averaged laptop number"
+        }
+      ],
+      "criteria": [
+        "Rejects a single average",
+        "Asks for p50 and p95 per stage",
+        "Asks for measurement on a real phone call",
+        "Separates tool turns"
+      ],
+      "examples": {
+        "pass": "voice-latency-budget: an average hides the turns callers complain about. Report p50 and p95 per stage, measured on a real phone call, with tool turns bucketed apart.",
+        "fail": "voice-latency-budget: yes, that is good, 900 ms is under the budget."
+      }
+    }
+  ]
+}

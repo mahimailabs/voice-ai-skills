@@ -48,27 +48,55 @@ These load the real SDKs with fake backend/speech I/O. They verify guarded playb
 context ordering, authored errors, metric fields, and imports. They are not a live
 voice eval suite or a PSTN readiness claim.
 
+## Behavioral scenarios
+
+Every skill has a scenario file in [`tests/scenarios/`](../tests/scenarios/), at least
+two scenarios each. A scenario holds:
+
+- `prompt`: what a user would type.
+- `required` and `forbidden`: case-insensitive regular expressions the final answer
+  must and must not match. Forbidden patterns encode the skill's `## Do not` list.
+- `criteria`: what a human reviewer checks that a pattern cannot.
+- `examples`: a passing and a failing answer. The unit tests prove the passing one
+  meets every pattern and the failing one trips at least one, so a pattern that has
+  drifted into matching everything fails CI.
+
+A new skill needs its scenario file before it lands; `tests/test_scenarios.py` fails
+otherwise. Patterns are a floor, not a verdict.
+
 ## Native coding-agent acceptance
 
-The five [acceptance cases](../tests/agents/cases.json) cover review routing,
-turn-taking, installed helper execution, uncertain writes, and unavailable docs.
-Run them in a new project/session using the client's current documented CLI and
-capture its tool trace. Record client/model versions, enabled skills, the repository
-commit, date, and results. Also repeat the review case with only the review skill
-installed and browsing disabled.
+The runner installs the skills into a disposable project, runs each scenario through
+the client's own noninteractive CLI, and keeps stdout and stderr. With `--trace` it
+parses stdout as that client's native trace and grades it:
 
-An optional runner creates disposable projects and saves stdout/stderr:
+- The expected skill must be opened by a tool call with a matching result that is
+  not an error and not empty. Naming the skill in the answer does not count.
+- The final answer must meet the scenario's `required` and `forbidden` patterns.
+
+A case that clears both is marked `needs criteria review`; anything else is `fail`.
+`tests/test_traces.py` exercises both parsers on synthetic records.
+
+Claude Code (verify flags against the current CLI first):
 
 ```text
-python scripts/test_agent.py --agent CLIENT --output /tmp/voice-acceptance -- NATIVE_CLI_ARGUMENTS '{prompt}'
+python scripts/test_agent.py --agent claude-code --trace claude --output /tmp/voice-acceptance -- \
+  claude -p '{prompt}' --output-format stream-json --verbose \
+  --allowedTools Skill Read Glob Grep 'Bash(python3:*)'
 ```
 
-Replace the final command with your authenticated client's noninteractive command;
-configure its trace-output flag and verify the current CLI syntax first. The runner
-substitutes the prompt as a process argument, never a shell command. It can consume
-model usage. It is opt-in and is not run by ordinary CI.
+Codex:
 
-A mention of the expected skill is only a smoke signal. A pass requires a trace that
-shows actual skill/reference loading and a response meeting every case criterion.
-Review helper tool execution, unsupported claims, and missing-evidence handling.
-The compatibility matrix currently records native model acceptance as **not run**.
+```text
+python scripts/test_agent.py --agent codex --trace codex --output /tmp/voice-acceptance -- \
+  codex exec --json --skip-git-repo-check '{prompt}'
+```
+
+Add `--case ID` to run one scenario and `--skill NAME` to install only some skills.
+Also repeat the review scenarios with only `voice-agent-review` installed and browsing
+disabled. The runner substitutes the prompt as a process argument, never a shell
+command. It consumes model usage. It is opt-in and is not run by ordinary CI.
+
+Record every run in the harness test record in
+[compatibility](compatibility.md#harness-test-record): client and version, date,
+repository commit, scenarios run, results, and what was not checked.

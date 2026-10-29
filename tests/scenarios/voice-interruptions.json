@@ -1,0 +1,66 @@
+{
+  "skill": "voice-interruptions",
+  "scenarios": [
+    {
+      "id": "offline",
+      "prompt": "Design the interruption rules for a clinic voice agent. Current SDK documentation is unavailable in this test. Do not browse. Apply vendor-neutral guidance and explain which implementation details you cannot verify. Name the skill you used.",
+      "required": [
+        {
+          "pattern": "read-?back",
+          "why": "Protects the read-back"
+        },
+        {
+          "pattern": "backchannel|mm-?hm|\\\"okay\\\"|okay",
+          "why": "Ignores backchannels"
+        },
+        {
+          "pattern": "unverified|cannot verify|can't verify|not verified",
+          "why": "Labels SDK details unverified"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "verified against (the )?(current )?docs",
+          "why": "Must not claim verification it could not do"
+        }
+      ],
+      "criteria": [
+        "Continues vendor-neutral analysis",
+        "Labels SDK details unverified",
+        "Does not invent verified method signatures"
+      ],
+      "examples": {
+        "pass": "voice-interruptions: the read-back is uninterruptible; backchannels like mm-hm do not stop speech. SDK names below are unverified because docs were unavailable.",
+        "fail": "voice-interruptions: I verified against the current docs that allow_interruptions works; make the read-back interruptible."
+      }
+    },
+    {
+      "id": "interrupt-global-off",
+      "prompt": "Callers keep interrupting our agent while it reads back the appointment time, so the booking gets saved wrong. A teammate proposes turning interruptions off for the whole session. Good idea? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "read-?back",
+          "why": "Protects only the read-back"
+        },
+        {
+          "pattern": "\\bnot\\b|\\bno\\b|don't|do not",
+          "why": "Rejects the session-wide switch"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(yes|good idea)\\b[^.]{0,40}(whole|entire) session",
+          "why": "Must not approve a session-wide disable"
+        }
+      ],
+      "criteria": [
+        "Rejects session-wide disable",
+        "Protects only the read-back"
+      ],
+      "examples": {
+        "pass": "No. voice-interruptions: do not disable interruptions for a whole session. Make only the read-back of the date and time uninterruptible.",
+        "fail": "Yes, good idea: turn off interruptions for the whole session."
+      }
+    }
+  ]
+}
