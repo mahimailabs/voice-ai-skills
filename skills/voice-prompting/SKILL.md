@@ -1,6 +1,6 @@
 ---
 name: voice-prompting
-description: Write system prompts for agents that speak instead of type. Covers spoken-output rules, splitting persona from task, writing numbers, dates, and phone numbers so the TTS says them correctly, confirmation phrasing, sentence length for interruptible speech, and what never belongs in a voice prompt. Use when writing or reviewing a voice agent system prompt, when the agent reads markdown or bullet points aloud, when replies run too long or the agent talks too much, or when the TTS mangles or mispronounces numbers, dates, times, or names.
+description: Write system prompts for agents that speak instead of type. Covers spoken-output rules, splitting persona from task, writing numbers, dates, and phone numbers so the TTS says them correctly, confirmation phrasing, sentence length for interruptible speech, and what never belongs in a voice prompt. Use when writing or reviewing a voice agent system prompt, when the agent reads markdown or bullet points aloud, when replies run too long or the agent talks too much, when the TTS mangles or mispronounces numbers, dates, times, or names, or when a knowledge base or FAQ pasted into the prompt slows the first token.
 license: MIT
 metadata:
   author: mahimairaja
