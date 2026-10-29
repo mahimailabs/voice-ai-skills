@@ -198,6 +198,8 @@ Vendor mappings in full, with a doc URL per claim, are in
 [references/adapters.md](references/adapters.md).
 
 ### LiveKit Agents
+
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
 1.8.x, verified 11 September 2026. `@function_tool()` takes the description from the
 docstring and the schema from type hints. There is NO framework tool timeout: set it
 on your own HTTP client. `raise ToolError("...")` sends your sentence to the model;
@@ -209,6 +211,8 @@ async with ctx.with_filler("Let me check that.", delay=1.5):
 https://docs.livekit.io/agents/logic/tools/definition.md
 
 ### Pipecat
+
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
 1.0, unversioned docs, checked 11 September 2026. A direct function is handler and
 schema at once: first parameter `params: FunctionCallParams`, registered through
 `LLMContext(tools=[...])`. Per-tool deadline is `@tool_options(timeout_secs=...)`. For
@@ -220,6 +224,8 @@ async def check_availability(params: FunctionCallParams, physician: str) -> None
 https://docs.pipecat.ai/pipecat/learn/function-calling
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 Unversioned docs, checked 11 September 2026. A function tool carries `function` (name,
 description, JSON Schema parameters), `server`, `async` (default false), `messages`
 (spoken while the tool runs), and `rejectionPlan`. The deadline is

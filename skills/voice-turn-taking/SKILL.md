@@ -149,6 +149,8 @@ Version pins and full mappings: [references/adapters.md](references/adapters.md)
 
 ### LiveKit Agents
 
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
+
 Pinned 1.8.x, verified 11 September 2026. Set `turn_handling`. The legacy kwargs are deprecated and silently ignored when both forms are passed. Endpointing defaults are min 0.5 s and max 3.0 s, or 0.3 s and 2.5 s with a streaming detector. Turn limits live in `turn_handling["user_turn_limit"]`, off by default.
 ```python
 from livekit.agents import AgentSession, TurnHandlingOptions, inference
@@ -159,6 +161,8 @@ session = AgentSession(turn_handling=TurnHandlingOptions(
 Docs: https://docs.livekit.io/agents/build/turns/
 
 ### Pipecat
+
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
 
 Pipecat 1.0, unversioned docs, checked 11 September 2026. Turn detection attaches to the user aggregator, not to the transport or the worker. The local smart-turn analyzer is already the default stop strategy, paired with a VAD at `stop_secs=0.2`. `SmartTurnParams` defaults: `stop_secs` 3.0, `pre_speech_ms` 500.0, `max_duration_secs` 8.0. There is no single min and max endpointing pair. The snippet is the explicit form of that default, so you can see where the analyzer attaches.
 ```python
@@ -171,6 +175,8 @@ strategies = UserTurnStrategies(stop=[TurnAnalyzerUserTurnStopStrategy(
 Docs: https://docs.pipecat.ai/api-reference/server/utilities/turn-detection/smart-turn-overview
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 
 Unversioned docs, checked 11 September 2026. Endpointing precedence, highest first: `customEndpointingRules`, `smartEndpointingPlan`, `transcriptionEndpointingPlan`, the transcriber's built-in endpointing.
 `startSpeakingPlan.waitSeconds` default 0.4, min 0, max 5. It is a floor, not a ceiling: pipeline latency adds to it.
