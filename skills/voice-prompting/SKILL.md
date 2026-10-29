@@ -138,6 +138,8 @@ Vendor names appear only in this section and in
 [references/adapters.md](references/adapters.md), which carries a doc URL per claim.
 
 ### LiveKit Agents
+
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
 Pinned 1.8.x, verified 11 September 2026. The system prompt is the required
 keyword-only `instructions` on the `Agent` subclass. Override it for one reply with
 `session.generate_reply(instructions=...)`, also keyword-only.
@@ -148,6 +150,8 @@ super().__init__(instructions=SPOKEN + PERSONA + TASK + CONFIRM)
 Docs: https://docs.livekit.io/agents/start/voice-ai/
 
 ### Pipecat
+
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
 Pipecat 1.0 docs, checked 11 September 2026. The system prompt goes in
 `system_instruction` on the LLM service `Settings`, not in a context message.
 
@@ -159,6 +163,8 @@ llm = OpenAILLMService(api_key=key, settings=settings)
 Docs: https://docs.pipecat.ai/pipecat/learn/function-calling
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 Unversioned docs, checked 11 September 2026. The system prompt is a `system` role
 entry in `model.messages`. The greeting is the separate `firstMessage` field.
 

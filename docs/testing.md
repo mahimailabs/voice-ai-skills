@@ -13,6 +13,22 @@ skills and references. A local link escaping its installed skill is an error. Un
 tests copy every skill alone, run the bundled calculator outside the source tree,
 and exercise the shared clinic confirmation and timeout rules without providers.
 
+## Adapter drift
+
+```sh
+python scripts/adapter_drift.py
+```
+
+Reads the stamp under every stack heading in each skill's `## Adapters` section and the
+SDK pins in CI, then compares them with PyPI releases. It prints, per skill and stack,
+the pin, the latest release, how many releases the pin is behind, and the days since
+verification. An adapter is `due` when its stack shipped a newer minor or major release
+or it was verified more than 90 days ago, and `stale` after 180 days, as
+[the neutrality policy](neutrality.md#keeping-adapters-current) sets. Drift never fails
+a build. The weekly `adapter drift` workflow writes the report to its run summary and,
+with `--open-issues`, opens an `Adapter refresh: <skill> / <stack>` issue for each due
+adapter that has none open. It needs network access; the unit tests do not.
+
 ## Real installer checks
 
 With Node.js 22.20+ and network access:

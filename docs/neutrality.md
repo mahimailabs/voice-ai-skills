@@ -35,6 +35,16 @@ Every adapter section, in `SKILL.md` and in `references/adapters.md`, carries:
 | one source link per claim | official docs, API schema, or source code |
 | traps, marked `TRAP:` | a setting that is silently ignored |
 
+In `SKILL.md`, the first line under each stack heading is a stamp the drift check reads:
+
+```text
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
+```
+
+`package` is the PyPI name, or `none` for a hosted API. `pinned` is a series such as
+`1.8`, an exact release such as `1.8.1`, or `unversioned`. `verified` must be the same
+date the prose states; `scripts/validate.py` fails when they differ.
+
 A setting the stack does not offer is written as not available, with what to do
 instead. It is never left out: a missing row reads as an oversight, not a gap.
 

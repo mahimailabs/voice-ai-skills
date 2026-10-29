@@ -49,6 +49,9 @@ changes a claim, the entry names the skill and the stack.
   subagents: eight read-only reviewers, one per group, see only file paths and the
   checklist, and a ninth writes the report from their outputs. Briefs are in
   `references/goldfish.md`, and the report header records the `Review mode`.
+- A stamp line under each adapter heading records the package, pin, and verification
+  date. `scripts/adapter_drift.py` and a weekly workflow report how far each pin is
+  behind PyPI and open refresh issues for due adapters. Drift never fails a build.
 
 ### Changed
 
