@@ -155,6 +155,8 @@ Pinned: LiveKit Agents 1.8.x, Pipecat 1.0 and Vapi unversioned, checked 11 Septe
 Full mappings and every source URL: [references/adapters.md](references/adapters.md).
 
 ### LiveKit Agents
+
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
 Pass `GPTLiveModel` as `llm`, and pass a VAD: the session drops its default one here.
 Instructions go on the `Agent`. Startup context: 128 messages or 8192 tokens. The three
 channels `append_instructions`, `append_thinking`, `append_commentary` take 500 tokens each.
@@ -167,10 +169,14 @@ session = AgentSession(vad=inference.VAD(model="silero"), llm=GPTLiveModel(
 Docs: https://docs.livekit.io/agents/models/realtime/plugins/gpt-live/
 
 ### Pipecat
+
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
 No full-duplex service class in the 1.0 pages checked: verify against current docs.
 Docs: https://docs.pipecat.ai/pipecat/learn/your-first-agent
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 A turn-based speech-to-speech block, not a full-duplex one. Turn control stays in
 `startSpeakingPlan` and `stopSpeakingPlan`. Full-duplex: verify against current docs.
 Docs: https://docs.vapi.ai/openai-realtime

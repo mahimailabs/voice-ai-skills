@@ -140,6 +140,8 @@ Full mappings: [references/adapters.md](references/adapters.md).
 
 ### LiveKit Agents
 
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
+
 Cascade: pass stt, llm and tts. For speech-to-speech, pass a realtime model as llm.
 
 ```python
@@ -151,6 +153,8 @@ Docs: https://docs.livekit.io/agents/start/voice-ai/
 
 ### Pipecat
 
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
+
 Cascade: an ordered Pipeline list. The canonical order is transport.input(), stt,
 aggregators.user(), llm, tts, transport.output(), aggregators.assistant().
 Ordering is load-bearing. The assistant aggregator must follow transport.output(),
@@ -160,6 +164,8 @@ Speech-to-speech and full-duplex service classes: verify against current docs.
 Docs: https://docs.pipecat.ai/pipecat/learn/your-first-agent
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 
 Cascade: set three blocks on the assistant, transcriber, model and voice.
 Speech-to-speech: keep one model block with provider openai and a realtime model id.

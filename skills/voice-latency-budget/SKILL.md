@@ -173,6 +173,8 @@ Vendor names appear only here and in
 
 ### LiveKit Agents
 
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
+
 - Pinned: LiveKit Agents 1.8.x for Python, verified 11 September 2026.
 - Read per-turn latency from `ChatMessage.metrics`. `metrics_collected` is deprecated.
 - Keys: `transcription_delay`, `end_of_turn_delay`, `llm_node_ttft`, `tts_node_ttfb`, `e2e_latency`.
@@ -184,6 +186,8 @@ Vendor names appear only here and in
 
 ### Pipecat
 
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
+
 - Pinned: Pipecat 1.0, unversioned docs, checked 11 September 2026.
 - Metrics are off by default. Set `enable_metrics=True` and `enable_usage_metrics=True`.
 - Logged: TTFB, TTFA (TTS only), TTFAT (LLM only), Processing Time, Text Aggregation.
@@ -193,6 +197,8 @@ Vendor names appear only here and in
 - Docs: https://docs.pipecat.ai/pipecat/fundamentals/metrics
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 
 - Pinned: unversioned rolling API, checked 11 September 2026.
 - `startSpeakingPlan.waitSeconds` is the reply floor: default 0.4, min 0, max 5.

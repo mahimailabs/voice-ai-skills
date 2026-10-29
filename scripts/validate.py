@@ -28,6 +28,15 @@ MAX_BODY_BYTES = 24_000
 REQUIRED_HEADINGS = ["## Use this when", "## Do not", "## Adapters"]
 NO_ADAPTERS = {"voice-agent-review"}
 
+# Each "### <stack>" under "## Adapters" opens with a machine-readable stamp, so the
+# drift report can compare pins with releases. The prose must state the same date.
+STAMP_RE = re.compile(
+    r"<!-- adapter: package=([a-z0-9-]+) pinned=([0-9][0-9.]*|unversioned) "
+    r"verified=(\d{4})-(\d{2})-(\d{2}) -->"
+)
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August",
+          "September", "October", "November", "December"]
+
 # Markdown links: [text](target). Skips images, anchors, mailto and http(s).
 LINK_RE = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 
@@ -94,6 +103,38 @@ def check_links(text: str, skill_dir: str, path: str, failures: list) -> None:
             failures.append(f"{path}: relative link does not resolve: {target}")
 
 
+def adapter_stamps(text: str, path: str, failures: list) -> list[dict]:
+    """Return one stamp per stack under ## Adapters, recording missing or mismatched ones."""
+    match = re.search(r"^## Adapters\s*$", text, re.MULTILINE)
+    if not match:
+        return []
+    section = text[match.end():]
+    end = re.search(r"^## ", section, re.MULTILINE)
+    section = section[:end.start()] if end else section
+    preamble, *stacks = re.split(r"^### ", section, flags=re.MULTILINE)
+    stamps = []
+    for block in stacks:
+        stack, _, body = block.partition("\n")
+        first = next((line for line in body.split("\n") if line.strip()), "")
+        stamp = STAMP_RE.fullmatch(first.strip())
+        if not stamp:
+            failures.append(f"{path}: adapter '{stack.strip()}' has no stamp line "
+                            f"'<!-- adapter: package=... pinned=... verified=YYYY-MM-DD -->'")
+            continue
+        package, pinned, year, month, day = stamp.groups()
+        if not 1 <= int(month) <= 12:
+            failures.append(f"{path}: adapter '{stack.strip()}' has an invalid month")
+            continue
+        spoken = f"{int(day)} {MONTHS[int(month) - 1]} {year}"
+        prose = " ".join((preamble + " " + body).split())
+        if spoken not in prose:
+            failures.append(f"{path}: adapter '{stack.strip()}' stamp says {spoken}, "
+                            f"but the prose does not")
+        stamps.append({"stack": stack.strip(), "package": package, "pinned": pinned,
+                       "verified": f"{year}-{month}-{day}"})
+    return stamps
+
+
 def check_skill(skill_dir: str, failures: list) -> None:
     folder = os.path.basename(skill_dir)
     path = os.path.join(skill_dir, "SKILL.md")
@@ -147,6 +188,8 @@ def check_skill(skill_dir: str, failures: list) -> None:
     for heading in headings:
         if not re.search(rf"^{re.escape(heading)}\s*$", text, re.MULTILINE):
             failures.append(f"{path}: missing required heading '{heading}'")
+
+    adapter_stamps(text, path, failures)
 
     # References are executable instructions too; validate the entire installed folder.
     for markdown in Path(skill_dir).rglob("*.md"):

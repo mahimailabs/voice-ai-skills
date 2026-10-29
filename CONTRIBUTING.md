@@ -26,7 +26,8 @@ docs. They need care, not deep voice expertise.
 2. Check every claim for that stack against the vendor's official docs, API schema, or
    source code. Never against a blog post or another summary.
 3. Fix what changed. Keep one source link per claim.
-4. Update the pinned version and the verification date, even if nothing else changed.
+4. Update the pinned version and the verification date, even if nothing else changed,
+   in the prose and in the stamp line under the stack heading in `SKILL.md`.
 5. If a setting no longer exists, say so and say what to do instead. Do not delete the row.
 6. Note changed claims in `CHANGELOG.md` under `Unreleased`.
 

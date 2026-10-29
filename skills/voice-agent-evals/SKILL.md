@@ -151,6 +151,8 @@ Full mappings, flags, and per-claim doc URLs: [references/adapters.md](reference
 
 ### LiveKit Agents
 
+<!-- adapter: package=livekit-agents pinned=1.8.1 verified=2026-09-11 -->
+
 Pinned to LiveKit Agents 1.8.1, verified 11 September 2026. The eight judge names map
 to the eight factories in `livekit.agents.evals`. Text simulation is the default; audio
 is a subcommand carrying three degradation flags and no accent flag.
@@ -164,6 +166,8 @@ Docs: https://docs.livekit.io/agents/start/testing/test-framework.md
 
 ### Pipecat
 
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
+
 Pipecat 1.0 docs, unversioned pages, checked 11 September 2026. No scenario harness or
 shipped judge set is confirmed here: verify against current docs before claiming one.
 Per-run latency comes from the metrics observer, which you wire yourself.
@@ -176,6 +180,8 @@ worker = PipelineWorker(pipeline,
 Docs: https://docs.pipecat.ai/pipecat/fundamentals/metrics
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 
 Unversioned docs, checked 11 September 2026. Two separate products: Evals (mock
 conversations with response and tool-call checks, `POST /eval` and `POST /eval/run`)
