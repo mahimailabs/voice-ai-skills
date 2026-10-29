@@ -45,6 +45,11 @@ changes a claim, the entry names the skill and the stack.
   as a map of one call. Built with anime.js and Radix primitives, including a segmented
   light, dark, and auto theme toggle.
 
+- `voice-agent-review` runs with fresh reviewers by default when the client can start
+  subagents: eight read-only reviewers, one per group, see only file paths and the
+  checklist, and a ninth writes the report from their outputs. Briefs are in
+  `references/goldfish.md`, and the report header records the `Review mode`.
+
 ### Changed
 
 - GitHub Actions are pinned to commit SHAs, workflows default to read-only

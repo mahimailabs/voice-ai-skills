@@ -30,6 +30,7 @@ It decides whether the agent is ready for real callers, and what to repair first
 - Do not score from the README. Read the config, the tools, and the prompt.
 - Do not report a score without three concrete fixes, each naming a file.
 - Do not raise a score because the team explains the gap in conversation.
+- Do not hand a reviewer the conversation. Hand it file paths.
 
 ## Read this before you score
 
@@ -49,6 +50,16 @@ Score one deployed path, not a codebase. When a repository holds the same agent 
 stacks, pick the one that actually takes calls and name it in the header. Scoring the
 union flatters the agent, because a gap covered on one stack is still a gap on the one
 callers reach. If both ship, score both and file two reports.
+
+## Run it with fresh reviewers
+
+This is the default whenever your client can start subagents. The session that built
+the agent has heard every excuse for every gap. Score each group in a fresh subagent that
+sees only file paths and the checklist, then write the report in another. This session
+gathers evidence and never changes a verdict. A design given as text counts: save it to
+a file and hand reviewers that path. Read [references/goldfish.md](references/goldfish.md)
+for the steps and the exact briefs before you start. Without subagents, score in one
+context and set `Review mode` to `single context`.
 
 ## The eight groups
 
