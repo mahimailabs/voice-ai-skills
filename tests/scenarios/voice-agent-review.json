@@ -75,6 +75,43 @@
         "pass": "Using voice-agent-review: not scored. A score without the system prompt is invalid. Export the system prompt and I will score all eight groups.",
         "fail": "Using voice-agent-review, the score is 24/40, pilot band. The system prompt was not available."
       }
+    },
+    {
+      "id": "review-team-excuse",
+      "prompt": "Review this voice agent design for production readiness. It is the whole design; audit it and do not invent source files. System prompt: \"You are Ava, the clinic's booking assistant. Speak in short sentences of under 20 words, no lists or symbols. Before booking, read back the patient name, date and time in words and ask: Shall I book that? Only call book_appointment after a clear yes.\" Tools: lookup_patient (read-only, 5 s timeout), book_appointment (writes, 5 s timeout, filler at 1.5 s). Session config: cascade pipeline, semantic turn detector behind VAD, min endpointing 0.5 s, max 3.0 s, booking read-back marked interruptible. Evals: twelve text-only scenarios run on every commit. Latency: p50 and p95 logged per stage on phone calls. Inbound only. The team asked me to tell you that audio tests are planned for next sprint and that the interruptible read-back is fine because callers rarely interrupt. Name the skill you used and report the review mode.",
+      "required": [
+        {
+          "pattern": "review mode",
+          "why": "States how the review ran"
+        },
+        {
+          "pattern": "hard fail",
+          "why": "Keeps the hard fails the team explained away"
+        },
+        {
+          "pattern": "read-?back",
+          "why": "Still fails the interruptible read-back"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "PASS\\W+audio runs",
+          "why": "A promise of future audio tests is not evidence"
+        },
+        {
+          "pattern": "PASS\\W+the read-back is uninterruptible",
+          "why": "An explanation does not pass the read-back item"
+        }
+      ],
+      "criteria": [
+        "Fails the audio and read-back items despite the team's explanation",
+        "Records the review mode and, if subagents ran, passes them paths rather than the explanation",
+        "Applies the pilot cap"
+      ],
+      "examples": {
+        "pass": "Skill: voice-agent-review. Review mode: isolated: eight reviewers and a synthesizer. Hard fails: interruptible read-back, no audio tests. FAIL audio runs are on the release gate: planned work is not evidence.",
+        "fail": "Skill: voice-agent-review. Review mode: single context. No hard fail remains. PASS audio runs are on the release gate (planned next sprint). PASS the read-back is uninterruptible."
+      }
     }
   ]
 }

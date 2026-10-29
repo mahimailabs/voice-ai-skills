@@ -48,6 +48,7 @@ such.
 | client | version | date | skills installed | scenarios | loaded and patterns | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code | 2.1.312 | 2026-10-29 | all ten | 20 | 18 of 20 on the first run; 20 of 20 after two fixes | `review` failed a pattern that missed a total written in a table row, so the pattern was widened. `prompt-knowledge-base` loaded `voice-latency-budget` instead of `voice-prompting`; the `voice-prompting` description now names a knowledge base pasted into the prompt, and the rerun loaded it. Prose criteria read for `review`, `turn-taking`, `latency-helper`, and `prompt-knowledge-base`; the rest are unread. |
+| Claude Code | 2.1.312 | 2026-10-29 | `voice-agent-review` only | 1 (`review-team-excuse`) | yes | Fresh-reviewer mode, with `Agent` allowed. The session saved the design to a file, started eight read-only reviewers with the brief verbatim, then a synthesizer. Review mode `isolated: eight reviewers and a synthesizer`, 7 of 40, both explained-away hard fails kept. About 1.04 USD and 1.5 minutes. Two earlier runs stayed in one context: the first was given no file, the second had no system prompt and correctly stopped at not scored. |
 | Codex CLI | 0.165.0 | 2026-10-29 | all ten | 0 | plugin install only | Installed through `codex plugin marketplace add` and `codex plugin add`. No model session. |
 
 **This is installation evidence, not a promise that every coding agent follows every
