@@ -24,6 +24,8 @@ class ScenarioTests(unittest.TestCase):
                     self.assertNotIn(scenario['id'], seen, 'scenario ids are unique')
                     seen.add(scenario['id'])
                     self.assertTrue(scenario['prompt'].strip())
+                    for name in scenario.get('also_accept', []):
+                        self.assertIn(name, scenarios.load(), 'also_accept names a real skill')
                     self.assertTrue(scenario['criteria'])
                     self.assertTrue(scenario['required'], 'at least one required pattern')
                     self.assertTrue(scenario['forbidden'], 'at least one forbidden pattern')

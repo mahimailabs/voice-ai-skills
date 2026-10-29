@@ -19,7 +19,8 @@ It decides whether the agent is ready for real callers, and what to repair first
 - You inherited a voice agent codebase and need to know what is wrong first.
 - A launch date exists and nobody has scored the agent against anything.
 - Real calls are failing and you need the systemic cause, not one transcript.
-- You are reviewing a design document before the code is written.
+- You are reviewing a design document before the code is written. voice-agent-spec
+  writes one in the shape this review scores.
 
 ## Do not
 
