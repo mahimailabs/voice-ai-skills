@@ -190,6 +190,8 @@ Vendor mappings in full, with a doc URL per claim, are in
 [references/adapters.md](references/adapters.md).
 
 ### LiveKit Agents
+
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
 1.8.x, verified 11 September 2026. `AMD` runs once on the first utterance and locks
 playout while it classifies. The categories are `human`, `machine-ivr`, `machine-vm`,
 `machine-unavailable`, `uncertain`. The vendor example treats `uncertain` as human.
@@ -202,6 +204,8 @@ async with AMD(session, participant_identity=identity) as detector:
 https://docs.livekit.io/telephony/features/answering-machine-detection/
 
 ### Pipecat
+
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
 1.0, unversioned docs, checked 11 September 2026. The telephony provider is a
 serializer on a websocket transport, not a transport class. `twilio_sample_rate`
 defaults to 8000 (mu-law), caller keypresses arrive as `InputDTMFFrame`, and
@@ -214,6 +218,8 @@ No built-in detection or transfer helper is documented: verify against current d
 https://docs.pipecat.ai/api-reference/server/services/serializers/twilio
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 Unversioned docs, checked 11 September 2026. `voicemailDetection` is a top-level
 assistant field, either `"off"` or a plan object, and `voicemailMessage` is what gets
 left on the recording. Plan defaults: `beepMaxAwaitSeconds` 30, `type` `audio`. The

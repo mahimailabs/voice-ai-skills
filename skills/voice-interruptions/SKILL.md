@@ -181,6 +181,8 @@ Vendor mappings in full, with a doc URL per claim, are in
 [references/adapters.md](references/adapters.md).
 
 ### LiveKit Agents
+
+<!-- adapter: package=livekit-agents pinned=1.8 verified=2026-09-11 -->
 1.8.x, verified 11 September 2026. Knobs live under `turn_handling["interruption"]`:
 min_duration 0.5, min_words 0, resume_false_interruption True,
 false_interruption_timeout 2.0. A legacy kwarg beside `turn_handling` is dropped in
@@ -192,6 +194,8 @@ session.say("Tuesday the fourteenth at three fifteen.", allow_interruptions=Fals
 https://docs.livekit.io/agents/build/audio/
 
 ### Pipecat
+
+<!-- adapter: package=pipecat-ai pinned=unversioned verified=2026-09-11 -->
 1.0, unversioned docs, checked 11 September 2026. Disabling interruptions does not
 ignore the caller: speech over the bot is still transcribed and queued as a turn. A
 real read-back gate needs a mute strategy, not an interruption setting.
@@ -204,6 +208,8 @@ start_strategy = MinWordsUserTurnStartStrategy(min_words=2)
 https://docs.pipecat.ai/pipecat/fundamentals/interruptions
 
 ### Vapi
+
+<!-- adapter: package=none pinned=unversioned verified=2026-09-11 -->
 Unversioned docs, checked 11 September 2026. `stopSpeakingPlan` carries the floors:
 `numWords` default 0 (max 10), `voiceSeconds` default 0.2 (used only when `numWords`
 is 0), `backoffSeconds` default 1. `acknowledgementPhrases` never interrupt and
