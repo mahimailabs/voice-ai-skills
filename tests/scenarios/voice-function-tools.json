@@ -1,0 +1,72 @@
+{
+  "skill": "voice-function-tools",
+  "scenarios": [
+    {
+      "id": "tool-timeout",
+      "prompt": "Our clinic booking backend commits a reservation and then the HTTP request times out. The agent tells the caller nothing was booked and tries again. Review this behavior and propose a guarded flow. Name the skill you used.",
+      "required": [
+        {
+          "pattern": "idempoten",
+          "why": "Requires an idempotency key"
+        },
+        {
+          "pattern": "uncertain|unknown|may have (been )?(booked|committed)",
+          "why": "Treats the timeout as an uncertain outcome"
+        },
+        {
+          "pattern": "read-?back",
+          "why": "Keeps the read-back gate"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(simply|just) retry\\b",
+          "why": "Must not blindly retry a write"
+        }
+      ],
+      "criteria": [
+        "Treats outcome as uncertain",
+        "Requires read-only reconciliation and backend idempotency",
+        "Requires completed protected read-back plus a fresh yes",
+        "Keeps filler interruptible"
+      ],
+      "examples": {
+        "pass": "voice-function-tools: a timeout after commit is an uncertain outcome. Reconcile with a read-only lookup, send an idempotency key, and only rebook after a read-back and a fresh yes.",
+        "fail": "voice-function-tools: just retry the booking call until it succeeds."
+      }
+    },
+    {
+      "id": "tool-raw-json",
+      "prompt": "My availability tool returns the backend's raw JSON and the agent reads it to the caller. There is no timeout on the call. What should change? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "timeout|deadline",
+          "why": "Sets a tool deadline"
+        },
+        {
+          "pattern": "filler|say something|1\\.5",
+          "why": "Covers silence while the tool runs"
+        },
+        {
+          "pattern": "speak|spoken|sentence|summar",
+          "why": "Returns a speakable result"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "(leave|keep) the (raw )?JSON",
+          "why": "Must not keep raw JSON"
+        }
+      ],
+      "criteria": [
+        "Returns a short speakable result instead of raw JSON",
+        "Sets a deadline",
+        "Says something by 1.5 s while the tool runs"
+      ],
+      "examples": {
+        "pass": "voice-function-tools: return one spoken sentence, not raw JSON. Set a deadline on the call, and play a filler by 1.5 s while it runs.",
+        "fail": "voice-function-tools: keep the raw JSON and let the model figure it out."
+      }
+    }
+  ]
+}

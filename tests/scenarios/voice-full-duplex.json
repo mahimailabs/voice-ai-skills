@@ -1,0 +1,61 @@
+{
+  "skill": "voice-full-duplex",
+  "scenarios": [
+    {
+      "id": "duplex-turn-detector",
+      "prompt": "We moved to a full-duplex speech model and kept our semantic turn detector and say() calls for the legal disclaimer. Will that work? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "turn",
+          "why": "Explains turn ownership"
+        },
+        {
+          "pattern": "verbatim|say\\(\\)",
+          "why": "Explains the missing verbatim path"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(yes|that will work)\\b",
+          "why": "Must not approve the setup"
+        }
+      ],
+      "criteria": [
+        "Says the model owns turn boundaries",
+        "Says there is no verbatim say() path"
+      ],
+      "examples": {
+        "pass": "voice-full-duplex: the model owns turn boundaries, so the detector changes nothing, and there is no verbatim path, so say() raises or gets talked over.",
+        "fail": "voice-full-duplex: yes, that will work fine."
+      }
+    },
+    {
+      "id": "duplex-context-edit",
+      "prompt": "Mid-call we want our full-duplex agent to switch persona and we also edit earlier history to remove a mistake. How? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "append",
+          "why": "History is append-only"
+        },
+        {
+          "pattern": "new (connection|session)|reconnect",
+          "why": "A persona change needs a new connection"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "edit(ing)? (the )?(earlier )?history (works|is fine)",
+          "why": "Must not claim history edits work"
+        }
+      ],
+      "criteria": [
+        "History is append-only",
+        "Persona change needs a new connection"
+      ],
+      "examples": {
+        "pass": "voice-full-duplex: history is append-only and edits are dropped silently. A new persona needs a new connection with a fresh startup history.",
+        "fail": "voice-full-duplex: editing the history works; just change the persona string."
+      }
+    }
+  ]
+}

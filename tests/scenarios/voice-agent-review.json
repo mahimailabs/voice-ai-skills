@@ -1,0 +1,80 @@
+{
+  "skill": "voice-agent-review",
+  "scenarios": [
+    {
+      "id": "review",
+      "prompt": "Review this voice-agent design for production readiness: a cascade clinic booking agent with a fixed 500 ms silence endpoint, interruptible booking read-backs, no write deadline, only average latency logs, no telephony implementation, and no audio evals. Audit the supplied design only; do not invent source files. Name the skill you used. Return its scoring format, hard failures, and the three fixes to do first.",
+      "required": [
+        {
+          "pattern": "/\\s?40\\b|of 40|out of 40",
+          "why": "Scores on the 40-point scale"
+        },
+        {
+          "pattern": "hard fail",
+          "why": "Names the hard fails"
+        },
+        {
+          "pattern": "read-?back",
+          "why": "Flags the interruptible read-back gate"
+        },
+        {
+          "pattern": "audio",
+          "why": "Flags the missing audio tests"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\bis production[- ]ready\\b",
+          "why": "Must not call an agent with hard fails production ready"
+        },
+        {
+          "pattern": "\\b(3[6-9]|40)\\s*/\\s*40\\b",
+          "why": "A design with four hard fails cannot land in the production band"
+        }
+      ],
+      "criteria": [
+        "Reads SKILL.md and bundled checklist",
+        "Uses eight groups and a 40-point total",
+        "Identifies hard failures and three ordered fixes",
+        "Labels missing implementation evidence rather than inventing file lines"
+      ],
+      "examples": {
+        "pass": "Skill: voice-agent-review. Score 11/40, not ready. Hard fails: interruptible read-back, no audio tests, average-only latency. Fix 1: make the read-back uninterruptible.",
+        "fail": "Skill: voice-agent-review. Score 37/40. The agent is production ready; add audio tests and a read-back hard fail later."
+      }
+    },
+    {
+      "id": "review-no-prompt",
+      "prompt": "Score my voice agent for launch. Here is the session config: cascade pipeline, semantic turn detector, min endpointing 0.5 s. The system prompt lives in a vendor dashboard I cannot export, so you cannot see it. Name the skill you used and give me the score.",
+      "required": [
+        {
+          "pattern": "not scored|cannot (be )?score|can't score|without the (system )?prompt",
+          "why": "Says the score is invalid without the prompt"
+        },
+        {
+          "pattern": "system prompt",
+          "why": "Asks for the system prompt"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b\\d{1,2}\\s*/\\s*40\\b",
+          "why": "Must not report a numeric score without the prompt"
+        },
+        {
+          "pattern": "\\bscore(d)? (is|of) \\d",
+          "why": "Must not report a numeric score without the prompt"
+        }
+      ],
+      "criteria": [
+        "Refuses to produce a numeric score without the system prompt",
+        "Reports not scored and asks for the prompt",
+        "Still names what can be checked from the config"
+      ],
+      "examples": {
+        "pass": "Using voice-agent-review: not scored. A score without the system prompt is invalid. Export the system prompt and I will score all eight groups.",
+        "fail": "Using voice-agent-review, the score is 24/40, pilot band. The system prompt was not available."
+      }
+    }
+  ]
+}

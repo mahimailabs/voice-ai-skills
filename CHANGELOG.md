@@ -18,6 +18,12 @@ changes a claim, the entry names the skill and the stack.
 - CI runs the validator and unit tests on Windows, and `.gitattributes` keeps LF line
   endings on every checkout.
 - Dependabot for GitHub Actions and the site's npm packages.
+- Behavioral scenarios for every skill in `tests/scenarios/`: a prompt, required and
+  forbidden answer patterns drawn from the `## Do not` lists, criteria for a human
+  reviewer, and passing and failing examples that CI uses to prove the patterns.
+- `scripts/test_agent.py --trace claude|codex` parses the client's native trace. A
+  case passes only when the expected skill was opened with a non-error result and the
+  answer meets its patterns. The five old acceptance cases moved into the scenarios.
 
 - `docs/neutrality.md`: vendor neutrality rules for the core, required adapter fields,
   criteria for adding a stack, refresh cadence, and conflict-of-interest disclosure.

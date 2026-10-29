@@ -1,0 +1,70 @@
+{
+  "skill": "voice-turn-taking",
+  "scenarios": [
+    {
+      "id": "turn-taking",
+      "prompt": "Our voice agent cuts callers off while they read a phone number. Its only turn rule is 500 ms of silence. Explain the likely failure and what to measure before changing the rule. Name the skill you used.",
+      "required": [
+        {
+          "pattern": "\\bVAD\\b|voice activity",
+          "why": "Separates VAD from end of turn"
+        },
+        {
+          "pattern": "semantic|turn detector|end[- ]of[- ]turn model",
+          "why": "Names a turn detector as the fix direction"
+        },
+        {
+          "pattern": "measure|record|log",
+          "why": "Measures before changing"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "set (the )?(min(imum)? )?(endpointing|silence)[^.]{0,40}\\b0?\\.[0-2]\\d* ?s\\b",
+          "why": "Must not drop min endpointing below 0.3 s"
+        },
+        {
+          "pattern": "(increase|raise|bump) the silence (timeout|threshold) to \\d",
+          "why": "Must not fix it by only raising the silence timeout"
+        }
+      ],
+      "criteria": [
+        "Selects turn-taking and reads bundled guidance",
+        "Distinguishes VAD from turn completion",
+        "Tests digit pauses and uses measurements to justify changes"
+      ],
+      "examples": {
+        "pass": "Skill: voice-turn-taking. VAD only knows audio went quiet; a phone number has pauses. Put a semantic turn detector behind VAD and measure false cut-offs on digit strings first.",
+        "fail": "Skill: voice-turn-taking. Just increase the silence timeout to 2 seconds and the VAD will handle it."
+      }
+    },
+    {
+      "id": "turn-too-slow",
+      "prompt": "Callers say our agent waits too long before answering. End-to-end latency is 1.9 s. Someone wants to set min endpointing delay to 0.1 s. Is that the right change? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "0\\.3",
+          "why": "States the 0.3 s floor"
+        },
+        {
+          "pattern": "LLM|TTS|TTFT|TTFB|stage",
+          "why": "Checks whether the delay is in the LLM or TTS"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(yes|go ahead)\\b[^.]{0,30}0\\.1",
+          "why": "Must not approve 0.1 s"
+        }
+      ],
+      "criteria": [
+        "Rejects min endpointing below 0.3 s",
+        "Asks where the latency actually sits before tuning endpointing"
+      ],
+      "examples": {
+        "pass": "No. voice-turn-taking says never go below 0.3 s; the turn commits before the transcript finalizes. Measure per stage first: the 1.9 s may be in the LLM or TTS.",
+        "fail": "Yes, go ahead with 0.1 s endpointing; it will cut the wait."
+      }
+    }
+  ]
+}

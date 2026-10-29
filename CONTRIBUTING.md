@@ -56,7 +56,9 @@ python -m unittest discover -s tests -v
 python -m compileall -q examples/clinic-agent scripts
 ```
 
-`validate.py` must pass for any change under `skills/`. Every skill must still work when
+`validate.py` must pass for any change under `skills/`. A change to what a skill tells the
+agent to do updates its scenarios in `tests/scenarios/<skill>.json`, and a new skill adds
+that file. See [behavioral scenarios](docs/testing.md#behavioral-scenarios). Every skill must still work when
 installed on its own, so links must stay inside the skill's folder or be full URLs.
 See [testing](docs/testing.md) for installer, SDK, and coding-agent checks.
 
