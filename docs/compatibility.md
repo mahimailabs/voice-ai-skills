@@ -37,6 +37,19 @@ the same criteria. A second Codex run installed only `voice-latency-budget`, loa
 resolved `scripts/latency_budget.py` from the installed skill directory, executed the
 helper, compared the measured stages, and selected endpointing as the first fix.
 
+## Harness test record
+
+One row per native run of the [behavioral scenarios](../tests/scenarios/) through
+`scripts/test_agent.py --trace`. "Loaded" means the trace shows the expected skill
+opened with a non-error result; "patterns" means the final answer met the scenario's
+required and forbidden patterns. Prose criteria need a human read and are listed as
+such.
+
+| client | version | date | skills installed | scenarios | loaded and patterns | notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| Claude Code | 2.1.312 | 2026-10-29 | all ten | 20 | 18 of 20 on the first run; 20 of 20 after two fixes | `review` failed a pattern that missed a total written in a table row, so the pattern was widened. `prompt-knowledge-base` loaded `voice-latency-budget` instead of `voice-prompting`; the `voice-prompting` description now names a knowledge base pasted into the prompt, and the rerun loaded it. Prose criteria read for `review`, `turn-taking`, `latency-helper`, and `prompt-knowledge-base`; the rest are unread. |
+| Codex CLI | 0.165.0 | 2026-10-29 | all ten | 0 | plugin install only | Installed through `codex plugin marketplace add` and `codex plugin add`. No model session. |
+
 **This is installation evidence, not a promise that every coding agent follows every
 rule.** Use the [behavioral scenarios](../tests/scenarios/) and
 [test procedure](testing.md) before calling another client behavior-tested. Remote

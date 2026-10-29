@@ -6,7 +6,7 @@
       "prompt": "Review this voice-agent design for production readiness: a cascade clinic booking agent with a fixed 500 ms silence endpoint, interruptible booking read-backs, no write deadline, only average latency logs, no telephony implementation, and no audio evals. Audit the supplied design only; do not invent source files. Name the skill you used. Return its scoring format, hard failures, and the three fixes to do first.",
       "required": [
         {
-          "pattern": "/\\s?40\\b|of 40|out of 40",
+          "pattern": "/\\s?40\\b|of 40|out of 40|\\btotal\\b[^\\n]{0,40}\\b40\\b",
           "why": "Scores on the 40-point scale"
         },
         {
