@@ -1,0 +1,74 @@
+{
+  "skill": "voice-agent-spec",
+  "scenarios": [
+    {
+      "id": "spec-new-agent",
+      "prompt": "We are about to build a voice agent that books, moves, and cancels clinic appointments over the phone. Nothing is written down yet. Help me write the spec. Name the skill you used.",
+      "required": [
+        {
+          "pattern": "exact|verbatim|word for word",
+          "why": "Asks whether any string must be heard exactly before choosing a shape"
+        },
+        {
+          "pattern": "\\?",
+          "why": "Asks the person a question instead of writing the whole spec unasked"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "(use|pick|choose) (OpenAI|Deepgram|ElevenLabs|Cartesia|Gemini|GPT)",
+          "why": "Must not pick a provider before the shape"
+        },
+        {
+          "pattern": "\\bTBD\\b",
+          "why": "Must not leave sections as TBD"
+        }
+      ],
+      "criteria": [
+        "Asks the shape-deciding questions one at a time, starting with exact wording",
+        "Does not draft every section without the person's input",
+        "Names voice-agent-review as the next step for scoring"
+      ],
+      "examples": {
+        "pass": "Using voice-agent-spec. First question: must the caller hear any string exactly, such as the appointment date and time?",
+        "fail": "Using voice-agent-spec. Pipeline: use OpenAI realtime. Telephony: TBD."
+      }
+    },
+    {
+      "id": "spec-review-before-code",
+      "prompt": "Here is our draft voice agent spec: cascade pipeline, a 500 ms silence timeout for turn-taking, a book_appointment tool, and fast responses. Is it ready to build? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "range|p50|p95|\\bms\\b",
+          "why": "Asks for numbers with targets and ranges instead of 'fast'"
+        },
+        {
+          "pattern": "voice-agent-review|fresh review|review",
+          "why": "Sends the spec to a review before code"
+        },
+        {
+          "pattern": "read-?back|confirm",
+          "why": "Asks how the write tool is confirmed"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "(?<!not )\\bready to build\\b|\\bit is ready\\b|^\\W*yes\\b",
+          "why": "A spec with 'fast responses' and an unconfirmed write is not ready"
+        }
+      ],
+      "criteria": [
+        "Says the spec is not ready",
+        "Names missing sections: interruptions, latency targets, tools read-back, telephony, evals",
+        "Recommends scoring with voice-agent-review in fresh-reviewer mode"
+      ],
+      "examples": {
+        "pass": "Not ready to build. voice-agent-spec: 'Fast responses' needs p50 and p95 targets in ms with a range. book_appointment needs a read-back and confirm step. Then score it with voice-agent-review.",
+        "fail": "voice-agent-spec: yes, it is ready to build."
+      },
+      "also_accept": [
+        "voice-agent-review"
+      ]
+    }
+  ]
+}

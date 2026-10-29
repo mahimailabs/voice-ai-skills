@@ -12,7 +12,7 @@ const BLOB = `${REPO}/blob/main`;
 const EDIT = `${REPO}/edit/main`;
 
 // The review skill is the entry point, so it leads; the rest follow the README's order.
-const ORDER = ['voice-agent-review', 'voice-pipeline-choice', 'voice-turn-taking', 'voice-interruptions', 'voice-latency-budget',
+const ORDER = ['voice-agent-spec', 'voice-agent-review', 'voice-pipeline-choice', 'voice-turn-taking', 'voice-interruptions', 'voice-latency-budget',
   'voice-prompting', 'voice-function-tools', 'voice-telephony', 'voice-agent-evals', 'voice-full-duplex'];
 
 const yamlString = (s) => JSON.stringify(s);

@@ -10,14 +10,14 @@ Engineering judgment for the coding agent building your voice agent.
 
 Read the skills on the web at [skills.mahimai.ca](https://skills.mahimai.ca).
 
-![skills](https://img.shields.io/badge/skills-10-informational)
+![skills](https://img.shields.io/badge/skills-11-informational)
 [![Agent Skills](https://img.shields.io/badge/format-Agent_Skills-informational)](https://agentskills.io/specification)
 [![license](https://img.shields.io/badge/license-MIT-informational)](LICENSE)
 [![validate](https://github.com/mahimailabs/voice-ai-skills/actions/workflows/validate.yml/badge.svg)](https://github.com/mahimailabs/voice-ai-skills/actions/workflows/validate.yml)
 
 A pause is not always the end of a turn. A cough should not cancel a reply.
 A booking needs a completed read-back and a clear yes before the write.
-These ten skills teach your coding agent how to make those decisions, measure the
+These eleven skills teach your coding agent how to make those decisions, measure the
 result, and find the next thing to fix.
 
 The core is vendor-neutral. Versioned adapters connect the rules to LiveKit,
@@ -103,6 +103,7 @@ If your client does not select skills automatically, explicitly ask it to use
 
 | Skill | What it decides | Use when |
 | --- | --- | --- |
+| [voice-agent-spec](skills/voice-agent-spec/) | The design, written down and scored before any code. | Starting an agent, or before adding a phone line, outbound calls, or a write tool. |
 | [voice-pipeline-choice](skills/voice-pipeline-choice/) | Cascade, speech-to-speech, half-cascade, or full-duplex, and what each one costs you. | Starting an agent, or someone asks whether to use the realtime API. |
 | [voice-turn-taking](skills/voice-turn-taking/) | When the caller has actually finished speaking. | The agent talks over callers, waits too long, or cuts off a phone number. |
 | [voice-interruptions](skills/voice-interruptions/) | What stops the agent, and what must never be stopped. | It stops for a cough, ignores a real interruption, or loses a confirmation. |

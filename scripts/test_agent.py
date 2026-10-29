@@ -73,7 +73,8 @@ def main():
             if args.trace:
                 trace = traces.PARSERS[args.trace](output, set(skills))
                 graded = scenarios.grade(case, trace['answer'])
-                loaded = case['expected_skill'] in trace['loaded']
+                accepted = {case['expected_skill'], *case.get('also_accept', [])}
+                loaded = bool(accepted & set(trace['loaded']))
                 report.update(loaded=trace['loaded'], expected_skill_loaded=loaded, patterns=graded,
                               acceptance=('needs criteria review' if loaded and graded['passed']
                                           and code == 0 else 'fail'))

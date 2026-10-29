@@ -39,7 +39,7 @@ python scripts/test_installs.py --mode symlink
 ```
 
 Each command runs `skills@1.6.0` for all five named targets, with the full collection
-and each of the ten skills separately. Nothing is installed globally. Complete
+and each skill separately. Nothing is installed globally. Complete
 installed files, links, and helper execution are checked in temporary projects.
 
 CI also runs the official reference validator as a required check:
@@ -73,6 +73,8 @@ two scenarios each. A scenario holds:
 - `required` and `forbidden`: case-insensitive regular expressions the final answer
   must and must not match. Forbidden patterns encode the skill's `## Do not` list.
 - `criteria`: what a human reviewer checks that a pattern cannot.
+- `also_accept` (optional): other skills that may correctly answer the prompt. Use it
+  only when two skills both own the question, never to excuse a routing miss.
 - `examples`: a passing and a failing answer. The unit tests prove the passing one
   meets every pattern and the failing one trips at least one, so a pattern that has
   drifted into matching everything fails CI.

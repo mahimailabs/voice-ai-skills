@@ -53,6 +53,10 @@ changes a claim, the entry names the skill and the stack.
   date. `scripts/adapter_drift.py` and a weekly workflow report how far each pin is
   behind PyPI and open refresh issues for due adapters. Drift never fails a build.
 
+- `voice-agent-spec`: writes a voice agent's design before code, one section per review
+  group, asks the questions that decide the shape first, and has the spec scored by
+  `voice-agent-review` with fresh reviewers. Template in `references/spec-template.md`.
+
 ### Changed
 
 - GitHub Actions are pinned to commit SHAs, workflows default to read-only
