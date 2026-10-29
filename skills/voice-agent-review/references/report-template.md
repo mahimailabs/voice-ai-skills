@@ -9,6 +9,7 @@ delete nothing. An empty field is a finding.
 - Date: <YYYY-MM-DD>
 - Reviewer: <name>
 - Commit: <short sha>
+- Review mode: <isolated: eight reviewers and a synthesizer | isolated reviewers, synthesized in the main session | single context>
 - Surface reviewed: <inbound line, outbound campaign, or both>
 - Cap: <none, or "pilot, capped by N hard fails">
 
