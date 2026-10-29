@@ -1,0 +1,56 @@
+{
+  "skill": "voice-pipeline-choice",
+  "scenarios": [
+    {
+      "id": "pipeline-verbatim",
+      "prompt": "We read prescription dosages back to patients word for word. Should we switch from our cascade to a speech-to-speech realtime model because it is newer? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "verbatim|exact wording|word for word",
+          "why": "Decides on exact wording first"
+        },
+        {
+          "pattern": "paraphras|re-?spoken|own words",
+          "why": "Notes realtime models paraphrase"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(yes|switch)\\b[^.]{0,30}(because|since) it is newer",
+          "why": "Must not switch because it is newer"
+        }
+      ],
+      "criteria": [
+        "Asks whether exact wording is required first",
+        "Keeps a verbatim path"
+      ],
+      "examples": {
+        "pass": "voice-pipeline-choice: exact wording is required, and speech-to-speech models paraphrase numbers. Keep the cascade or a half-cascade with a verbatim TTS path.",
+        "fail": "voice-pipeline-choice: yes, switch because it is newer."
+      }
+    },
+    {
+      "id": "pipeline-demo",
+      "prompt": "Our speech-to-speech demo sounded great in the browser. We plan to choose it for our call center. Anything to check first? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "phone|narrowband|8 ?kHz",
+          "why": "Chooses on a phone call"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\bno,? (nothing|you're good)\\b",
+          "why": "Must not choose on a demo"
+        }
+      ],
+      "criteria": [
+        "Tests on a real phone call over narrowband"
+      ],
+      "examples": {
+        "pass": "voice-pipeline-choice: choose on a phone call over the narrowband path callers use, not on a browser demo.",
+        "fail": "No, nothing else, you're good."
+      }
+    }
+  ]
+}

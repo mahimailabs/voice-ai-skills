@@ -1,0 +1,61 @@
+{
+  "skill": "voice-agent-evals",
+  "scenarios": [
+    {
+      "id": "evals-text-only",
+      "prompt": "We have five text-only test conversations and they all pass. Can we ship the voice agent? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "audio",
+          "why": "Requires audio tests"
+        },
+        {
+          "pattern": "latency",
+          "why": "Reports latency from the same run"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(yes|you can ship|ready to ship)\\b",
+          "why": "Must not ship on five text scenarios"
+        }
+      ],
+      "criteria": [
+        "Rejects text-only and five scenarios",
+        "Asks for audio simulation and latency from the same run"
+      ],
+      "examples": {
+        "pass": "voice-agent-evals: not yet. Text runs miss endpointing and barge-in; five scenarios measure nothing. Add audio simulation and report latency from the same run.",
+        "fail": "voice-agent-evals: yes, five green runs, you can ship."
+      }
+    },
+    {
+      "id": "evals-judge",
+      "prompt": "We use the same GPT model that runs our agent as the LLM judge, and it judges whether the agent said the exact confirmation string. Is that okay? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "assert",
+          "why": "Uses an assertion for the fixed string"
+        },
+        {
+          "pattern": "different model|another model|separate model|not the same model",
+          "why": "Uses a different judge model"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\b(that's|that is) (fine|okay|ok)\\b",
+          "why": "Must not approve self-judging"
+        }
+      ],
+      "criteria": [
+        "Uses an assertion for a fixed string",
+        "Uses a different model as judge"
+      ],
+      "examples": {
+        "pass": "voice-agent-evals: assert the exact string, do not judge it. And judge with a different model; the agent's own model grades its mistakes as correct.",
+        "fail": "voice-agent-evals: that is fine, the judge works."
+      }
+    }
+  ]
+}

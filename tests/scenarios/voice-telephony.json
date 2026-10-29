@@ -1,0 +1,61 @@
+{
+  "skill": "voice-telephony",
+  "scenarios": [
+    {
+      "id": "amd-uncertain",
+      "prompt": "Our outbound reminder agent greets immediately on connect, and when answering machine detection says 'uncertain' we treat it as a human. Review this. Name the skill you used.",
+      "required": [
+        {
+          "pattern": "uncertain",
+          "why": "Addresses the uncertain result"
+        },
+        {
+          "pattern": "probe|short (self-contained )?line|branch",
+          "why": "Probes, then branches"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "treat(ing)? (an )?uncertain (result )?as (a )?human (is )?(fine|ok|correct)",
+          "why": "Must not keep uncertain as human"
+        }
+      ],
+      "criteria": [
+        "Waits for AMD before greeting",
+        "Treats uncertain as not human: probe, then branch"
+      ],
+      "examples": {
+        "pass": "voice-telephony: do not greet before AMD returns. An uncertain result is not human: say a short self-contained line as a probe, then branch.",
+        "fail": "voice-telephony: treating uncertain as human is fine; greet right away."
+      }
+    },
+    {
+      "id": "telephony-recording",
+      "prompt": "We are moving our voice agent from a web demo to a phone number and want to record calls. What changes? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "8 ?kHz|narrowband",
+          "why": "Plans for narrowband audio"
+        },
+        {
+          "pattern": "announc|disclos|consent",
+          "why": "Announces recording"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "\\bHD audio\\b(?! is not| isn't)",
+          "why": "Must not assume HD audio on PSTN"
+        }
+      ],
+      "criteria": [
+        "Announces recording in the first utterance",
+        "Plans for 8 kHz narrowband audio"
+      ],
+      "examples": {
+        "pass": "voice-telephony: the line is 8 kHz narrowband, so retest STT. Announce recording in the first agent utterance.",
+        "fail": "voice-telephony: keep the HD audio settings from the web demo and record silently."
+      }
+    }
+  ]
+}

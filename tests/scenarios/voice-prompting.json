@@ -1,0 +1,57 @@
+{
+  "skill": "voice-prompting",
+  "scenarios": [
+    {
+      "id": "prompt-markdown",
+      "prompt": "Our phone agent says 'asterisk asterisk' and reads bullet points aloud. We copied the system prompt from our web chatbot. Rewrite the rules we need. Name the skill you used.",
+      "required": [
+        {
+          "pattern": "markdown",
+          "why": "Bans markdown"
+        },
+        {
+          "pattern": "\\b\\d{1,2}\\s*words\\b|word (limit|count)",
+          "why": "Sets a word count, not 'be concise'"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "^\\s*be concise\\.?\\s*$",
+          "why": "Must not rely on 'be concise' without a number"
+        }
+      ],
+      "criteria": [
+        "Bans markdown and lists in output",
+        "Gives a numeric length limit",
+        "Writes numbers as words in examples"
+      ],
+      "examples": {
+        "pass": "voice-prompting: never output markdown, lists, or headers. Keep each reply under 25 words. Write numbers as words in examples.",
+        "fail": "voice-prompting rules:\nbe concise.\n"
+      }
+    },
+    {
+      "id": "prompt-knowledge-base",
+      "prompt": "We pasted our 40-page clinic FAQ into the voice agent's system prompt and first-token time is slow. What should we do? Name the skill you used.",
+      "required": [
+        {
+          "pattern": "retriev|RAG|tool|look ?up",
+          "why": "Retrieves what the turn needs"
+        }
+      ],
+      "forbidden": [
+        {
+          "pattern": "keep (the )?(whole |entire )?FAQ in the (system )?prompt",
+          "why": "Must not keep the knowledge base in the prompt"
+        }
+      ],
+      "criteria": [
+        "Moves the knowledge base to retrieval"
+      ],
+      "examples": {
+        "pass": "voice-prompting: take the FAQ out of the system prompt and retrieve only what the turn needs with a lookup tool.",
+        "fail": "voice-prompting: keep the whole FAQ in the system prompt and use a faster model."
+      }
+    }
+  ]
+}
