@@ -7,7 +7,9 @@ follow relative references; running the optional helper also requires shell acce
 and Python 3.10+. SDK verification needs official documentation access or supplied
 version-matched documentation. No particular MCP server is mandatory.
 
-## Evidence as of September 16, 2026
+## Evidence
+
+The table records checks as of September 16, 2026. Later checks below carry their own date.
 
 | Client target | Documented project location | Local installer checks | Native model acceptance |
 | --- | --- | --- | --- |

@@ -135,7 +135,10 @@ def check_skill(skill_dir: str, failures: list) -> None:
     if line_count > MAX_LINES:
         failures.append(f"{path}: {line_count} lines, max is {MAX_LINES}")
 
-    body = text.split("\n---", 1)[1] if text.startswith("---") else text
+    # the body starts after the closing delimiter that parse_frontmatter accepted
+    lines = text.split("\n")
+    end = lines.index("---", 1) if "---" in lines[1:] else -1
+    body = "\n".join(lines[end + 1:])
     body_bytes = len(body.encode("utf-8"))
     if body_bytes > MAX_BODY_BYTES:
         failures.append(

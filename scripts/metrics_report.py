@@ -46,4 +46,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('log', type=Path)
     args = parser.parse_args()
-    print(json.dumps(summarize(args.log.read_text(encoding='utf-8').splitlines()), indent=2))
+    print(json.dumps(summarize(args.log.read_text(encoding='utf-8', errors='replace').splitlines()), indent=2))
